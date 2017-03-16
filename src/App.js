@@ -17,9 +17,10 @@ class App extends React.Component {
     };
 
     this.handlePanelClick = this.handlePanelClick.bind(this);
+    this.handlePanelUnClick = this.handlePanelUnClick.bind(this);
   }
   render() {
-    return <Game panelClicked={this.state.activePanel} onPanelClick={this.handlePanelClick}/>;
+    return <Game panelClicked={this.state.activePanel} onPanelClick={this.handlePanelClick} onPanelUnClick={ this.handlePanelUnClick }/>;
   }
   /********************************************************************/
   /*Wrapper methods for control clicks                                */
@@ -33,7 +34,13 @@ class App extends React.Component {
 
     console.log('I have completed ' + this.state.steps + ' steps');
     panelClicked.toggleOn();
-  }  
+  } 
+  handlePanelUnClick(panelClicked) {
+    this.setState((prevSate, props) => ({
+      activePanel: ''
+    }));
+    panelClicked.toggleOff();
+  }
   handleOnButtonClick(buttonClicked){
     /*Toggles on state*/
 
