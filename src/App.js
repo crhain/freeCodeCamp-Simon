@@ -33,7 +33,7 @@ class App extends React.Component {
 
     console.log('I have completed ' + this.state.steps + ' steps');
     panelClicked.toggleOn();
-  }
+  }  
   handleOnButtonClick(buttonClicked){
     /*Toggles on state*/
 
@@ -52,16 +52,16 @@ class App extends React.Component {
     and then runs sequence  */
     //let sequence = this.state.sequence.slice();
   }
-  generateRandomPanelSequence(){
+  generateRandomPanelSequence(random){
   /* helper function for takeTurn*/
-  switch(this.getRandomIntInclusive(1, 4)){
+  switch(random){
     case 1:
       return 'green';
-    case 1:
+    case 2:
       return 'red';
-    case 1:
+    case 3:
       return 'blue';
-    case 1:
+    case 4:
       return 'yellow';
     default:
       console.log('ERROR!');
