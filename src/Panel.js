@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class Panel extends React.Component{
   constructor(props){
     super(props);    
-    this.panelSound = new Audio();
+    this.panelSound = new Audio();    
   }
   toggleOn(){
     const sound1 = "media/simonSound1.mp3",
@@ -31,8 +31,6 @@ class Panel extends React.Component{
         }
         this.panelSound.src = currentSound;
         
-    
-
     this.panelSound.play();   
 
 
