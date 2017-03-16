@@ -52,22 +52,9 @@ class App extends React.Component {
     and then runs sequence  */
     //let sequence = this.state.sequence.slice();
   }
-
-}
-
-App.defaultProps = {
-};
-
-//helper functions
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function generateRandomPanelSequence(){
+  generateRandomPanelSequence(){
   /* helper function for takeTurn*/
-  switch(getRandomIntInclusive(1, 4)){
+  switch(this.getRandomIntInclusive(1, 4)){
     case 1:
       return 'green';
     case 1:
@@ -79,7 +66,17 @@ function generateRandomPanelSequence(){
     default:
       console.log('ERROR!');
       return 'undefined';
+    }
   }
+  getRandomIntInclusive(min, max){
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;  
+  }
+
 }
+
+App.defaultProps = {
+};
 
 export default App;
