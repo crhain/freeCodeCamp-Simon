@@ -3,7 +3,6 @@ import React from 'react';
 import './App.css';
 import Game from './Game';
 
-
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -17,8 +16,10 @@ class App extends React.Component {
     this.isGameRunning = false;
     this.isPlayerTurn = false;
     this.isSuccess = true;
-    this.steps = 0;
-    this.sequence = [];
+    this.turn = 1; //turn one means 1 panel played, turn 2 means 2, etc.
+    this.aiPanelSequence = [];
+    this.playerPanelSequence = [];
+    
 
     //bind button  handlers to app's context
     this.handleOnButtonClick = this.handleOnButtonClick.bind(this);
@@ -32,6 +33,7 @@ class App extends React.Component {
 
     //set some defaults for configuring the game
     this.panelPlaySpeed = 1000; //speed in miliseconds (so 1000 = 1 second)
+    this.debug = true;  //set to true to turn on debug mode
   }
   render() {
     return <Game panelClicked={this.state.activePanel} 
@@ -50,6 +52,7 @@ class App extends React.Component {
   } 
   handlePanelUnClick(panelClicked, clickEvent) {
     this.deactivatePanel(panelClicked.props.id);
+    this.updatePlayerTurn(panelClicked.props.id);
     return true;
   }
   handleOnButtonClick(clickEvent){
@@ -65,7 +68,11 @@ class App extends React.Component {
       //toggles isGameRunning
       this.isGameRunning = true;      
       //call takeTurn
-      this.takeTurn();
+      this.updateAiTurn();
+      return true;
+    }else if(this.debug){
+      this.isGameRunning = true;
+      this.updateAiTurn();
       return true;
     }
     return false;
@@ -78,21 +85,46 @@ class App extends React.Component {
   /********************************************************************/
   /*Game Engine                                                       */
   /********************************************************************/
-  takeTurn(){
+  updatePlayerTurn(panelId){
+    //1. check to see if panelId matches next item in sequence
+    //2. if it does, then remove current item from sequence
+    // 2a. check to see if sequence is over with. if it is, then switch to ai player
+    //     and generate new sequence
+    //3. if it does not match, signal an error and trigger ai to play sequence again
+    return true;
+  }
+  updateAiTurn(panelId, aiCurrentTurn){
     /* computer player updates sequence to run with next move
     and then runs sequence  */
-    this.activatePanel('green');
-    window.setTimeout(this.deactivatePanel.bind(this, 'green'), this.panelPlaySpeed);
-    //1. get random panel id using generateRandomPanelSequence(random)    
-    //2. set this.state.activePanel to id returned above which will cause a rerender of that panel
-    //3. need to trigger sound play.  Maybe alter Panel.toggleOn to take optional id paramter and then instantiate a panel so 
-    //   we can call that method... or we could move the actual code for playing the sound to app?
-    
+    //deactivate panel if it is active
+    let newPanelId;
 
-    //let sequence = this.state.sequence.slice();
+    if(!aiCurrentTurn){
+      aiCurrentTurn = 0;
+    }
+    if(panelId){
+      this.deactivatePanel(panelId);
+      //check to see if ai  has played full sequence, and if it has, update turn
+      if(aiCurrentTurn === this.turn){
+        this.turn = ++this.turn;
+        return true;
+      }      
+    }
+    //NEED TO WRITE: newPanelId should be  either item in sequence[aiCurrentTurn-1] or a new random sequence if at end of array
+    //if it is a new random sequence it should be pushed on to sequence array.
+
+    //get random panel id using generateRandomPanelSequence(random) and then push onto sequence
+    newPanelId = this.generateRandomPanelSequence();    
+    this.aiPanelSequence.push(newPanelId);
+    //activate current panel with newPanelId
+    this.activatePanel(newPanelId);
+    //call this function again after pnaelPlaySpeed amount of time
+    window.setTimeout(this.updateAiTurn.bind(this, newPanelId, ++aiCurrentTurn), this.panelPlaySpeed);
+    return false;
+        
+    //let sequence = this.aiPanelSequence.slice();
   }
-  activatePanel(panelId){
-    this.steps = ++this.steps;
+  activatePanel(panelId){    
     this.setState((prevState, props) => ({
       activePanel: panelId
     }));
@@ -138,6 +170,9 @@ class App extends React.Component {
   }
   generateRandomPanelSequence(random){
   /* helper function for takeTurn*/
+  if(!random){
+    random = this.getRandomIntInclusive(1, 4); //1 to 4 panels
+  }
   switch(random){
     case 1:
       return 'green';

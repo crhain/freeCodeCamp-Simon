@@ -78,7 +78,12 @@ describe('deactivatePanel(panelId):', () => {
   });
 });
 
-describe('takeTurn():', () => {
+describe('updatePlayerTurn():', () => {
+  it('', () => {
+
+  });
+});
+describe('updateAiTurn():', () => {
   it('', () => {
 
   });
