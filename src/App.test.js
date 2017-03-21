@@ -9,10 +9,6 @@ beforeEach(() => {
  app.state = {
    isOn: false,
    isStrict: false,
-   isGameRunning: false,
-   isSuccess: true,
-   steps: 0,
-   sequence: [],
    activePanel: ''
  } 
  
@@ -53,9 +49,10 @@ describe('handleStartButtonClick(clickEvent):', () => {
     expect(app.handleStartButtonClick()).toBe(true);    
   });
   it('sets isGameRunning to true', () => {
-    app.state = Object.assign(app.state, { isOn: true, isGameRunning: false }); 
+    app.isGameRunning = false;
+    app.state = Object.assign(app.state, { isOn: true }); 
     app.handleStartButtonClick();
-    expect(app.state.isGameRunning).toBe(true);    
+    expect(app.isGameRunning).toBe(true);    
   });
   it('does not run if game is already running', () => {
     expect(app.handleStartButtonClick()).toBe(false);

@@ -1,10 +1,7 @@
 /*renders a colored panel*/
-import React, { Component } from 'react';
+import React from 'react';
 
 class Panel extends React.Component{
-  constructor(props){
-    super(props);        
-  }
   render(){
     if(this.props.panelClicked === this.props.id){      
       return (

@@ -1,5 +1,5 @@
 /*renders control panel with associated buttons and display*/
-import React, { Component } from 'react';
+import React from 'react';
 
 class Control extends React.Component{
   render(){

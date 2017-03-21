@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+//import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import Game from './Game';
-import Panel from './Panel';
+
 
 class App extends React.Component {
   constructor(props){
