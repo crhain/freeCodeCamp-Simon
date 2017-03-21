@@ -5,6 +5,7 @@ class Control extends React.Component{
   render(){
     return (
       <div>
+        <button id="start-btn" onClick={ this.props.onStartClick }>Start</button>
         <p>This is my control</p>
       </div>
     );

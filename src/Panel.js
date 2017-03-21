@@ -43,7 +43,7 @@ class Panel extends React.Component{
     if(this.props.panelClicked === this.props.id){
       console.log('red panel was clicked and is now on');
       return (
-        <div className="panel-on" id={this.props.id} onMouseUp={ () => this.props.onPanelUnClick(this) } onMouseLeave={ () => this.props.onPanelUnClick(this) } >
+        <div className="panel-on" id={this.props.id} onMouseUp={ (event) => this.props.onPanelUnClick(this, event) } onMouseLeave={ (event) => this.props.onPanelUnClick(this, event) } >
           <p>This is panel #{this.props.id}</p>
         </div>
       );
