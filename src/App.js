@@ -30,7 +30,7 @@ class App extends React.Component {
     this.panelSound = new Audio();
 
     //set some defaults for configuring the game
-    this.panelPlaySpeed = 2000; //speed in miliseconds (so 1000 = 1 second)
+    this.panelPlaySpeed = 1000; //speed in miliseconds (so 1000 = 1 second)
   }
   render() {
     return <Game panelClicked={this.state.activePanel} 
@@ -78,6 +78,19 @@ class App extends React.Component {
   /********************************************************************/
   /*Game Engine                                                       */
   /********************************************************************/
+  takeTurn(){
+    /* computer player updates sequence to run with next move
+    and then runs sequence  */
+    this.activatePanel('green');
+    window.setTimeout(this.deactivatePanel.bind(this, 'green'), this.panelPlaySpeed);
+    //1. get random panel id using generateRandomPanelSequence(random)    
+    //2. set this.state.activePanel to id returned above which will cause a rerender of that panel
+    //3. need to trigger sound play.  Maybe alter Panel.toggleOn to take optional id paramter and then instantiate a panel so 
+    //   we can call that method... or we could move the actual code for playing the sound to app?
+    
+
+    //let sequence = this.state.sequence.slice();
+  }
   activatePanel(panelId){
     this.setState((prevState, props) => ({
       steps: ++prevState.steps,
@@ -123,20 +136,6 @@ class App extends React.Component {
   stopPanelSound(panelId){
     console.log('panel ' + this.props.id + ' turned off!'); 
   }
-  
-  takeTurn(){
-    /* computer player updates sequence to run with next move
-    and then runs sequence  */
-    this.activatePanel('green');
-    window.setTimeout(this.deactivatePanel.bind(this, 'green'), 2000);
-    //1. get random panel id using generateRandomPanelSequence(random)    
-    //2. set this.state.activePanel to id returned above which will cause a rerender of that panel
-    //3. need to trigger sound play.  Maybe alter Panel.toggleOn to take optional id paramter and then instantiate a panel so 
-    //   we can call that method... or we could move the actual code for playing the sound to app?
-    
-
-    //let sequence = this.state.sequence.slice();
-  }
   generateRandomPanelSequence(random){
   /* helper function for takeTurn*/
   switch(random){
@@ -158,7 +157,6 @@ class App extends React.Component {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;  
   }
-
 }
 
 App.defaultProps = {

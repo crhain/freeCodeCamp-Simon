@@ -46,8 +46,11 @@ describe('handleOnButtonClick(clickEvent):', () => {
 
 describe('handleStartButtonClick(clickEvent):', () => {
   it('does not run if game not on', () => {
-    expect(app.handleStartButtonClick()).toBe(false);
-    
+    expect(app.handleStartButtonClick()).toBe(false);    
+  });
+  it('does run if game on', () => {
+    app.state = Object.assign(app.state, {isOn: true});
+    expect(app.handleStartButtonClick()).toBe(true);    
   });
   it('sets isGameRunning to true', () => {
     app.state = Object.assign(app.state, { isOn: true, isGameRunning: false }); 
