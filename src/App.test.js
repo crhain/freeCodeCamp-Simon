@@ -66,6 +66,18 @@ describe('handleStrictButtonClick(clickEvent):', () => {
   });
 });
 
+describe('activatePanel(panelId):', () => {
+  it('', () => {
+
+  });
+});
+
+describe('deactivatePanel(panelId):', () => {
+  it('', () => {
+
+  });
+});
+
 describe('takeTurn():', () => {
   it('', () => {
 
