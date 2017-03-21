@@ -10,14 +10,15 @@ class App extends React.Component {
     //set the games state object
     this.state = {
       isOn: true, //temporarily set to true for testing
-      isStrict: false,
-      isGameRunning: false,
-      isPlayerTurn: false,
-      isSuccess: true,
-      steps: 0,
-      sequence: [],
+      isStrict: false,      
       activePanel: ''
     };
+
+    this.isGameRunning = false;
+    this.isPlayerTurn = false;
+    this.isSuccess = true;
+    this.steps = 0;
+    this.sequence = [];
 
     //bind button  handlers to app's context
     this.handleOnButtonClick = this.handleOnButtonClick.bind(this);
@@ -54,16 +55,15 @@ class App extends React.Component {
   handleOnButtonClick(clickEvent){
     /*Toggles on state*/
     return true;
-
   }
   handleStartButtonClick(clickEvent){
     /* toggles isGameRunning and calls takeTurn */    
     
     //button only works if the console turned on and game not currently running.
-    if(this.state.isOn && !this.state.isGameRunning){
+    if(this.state.isOn && !this.isGameRunning){
       console.log('start button clicked!');
       //toggles isGameRunning
-      this.state = Object.assign(this.state, {isGameRunning: true});
+      this.isGameRunning = true;      
       //call takeTurn
       this.takeTurn();
       return true;
@@ -92,8 +92,8 @@ class App extends React.Component {
     //let sequence = this.state.sequence.slice();
   }
   activatePanel(panelId){
+    this.steps = ++this.steps;
     this.setState((prevState, props) => ({
-      steps: ++prevState.steps,
       activePanel: panelId
     }));
     this.playPanelSound(panelId);
@@ -131,10 +131,10 @@ class App extends React.Component {
         this.panelSound.src = currentSound;
         
       this.panelSound.play();   
-      console.log('panel ' + this.props.id + ' turned on!');
+      console.log('panel ' + panelId + ' turned on!');
   }
   stopPanelSound(panelId){
-    console.log('panel ' + this.props.id + ' turned off!'); 
+    console.log('panel ' + panelId + ' turned off!'); 
   }
   generateRandomPanelSequence(random){
   /* helper function for takeTurn*/
