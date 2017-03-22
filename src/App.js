@@ -50,13 +50,19 @@ class App extends React.Component {
   /********************************************************************/
   handlePanelClick(panelClicked, clickEvent){
     /*takes a reference 'panel' to panel object*/
-    this.activatePanel(panelClicked.props.id);
-    return true;
+    if(this.isPlayerTurn){
+      this.activatePanel(panelClicked.props.id);
+      return true;
+    }
+    return false;    
   } 
   handlePanelUnClick(panelClicked, clickEvent) {
-    this.deactivatePanel(panelClicked.props.id);
-    this.updatePlayerTurn(panelClicked.props.id);
-    return true;
+    if(this.isPlayerTurn){
+      this.deactivatePanel(panelClicked.props.id);
+      this.updatePlayerTurn(panelClicked.props.id);
+      return true;
+    }
+    return false;    
   }
   handleOnButtonClick(clickEvent){
     /*Toggles on state*/
@@ -90,11 +96,27 @@ class App extends React.Component {
   /*Game Engine                                                       */
   /********************************************************************/
   updatePlayerTurn(panelId){
+    
     //1. check to see if panelId matches next item in sequence
-    //2. if it does, then remove current item from sequence
-    // 2a. check to see if sequence is over with. if it is, then switch to ai player
-    //     and generate new sequence
+    if(panelId === this.playerPanelSequence[0]){
+      //2. if it does, then remove current item from sequence
+      this.playerPanelSequence.shift();
+      console.log("correct!");
+      // 2a. check to see if sequence is over with. if it is, then switch to ai player
+      //     and generate new sequence
+      if(this.playerPanelSequence.length < 1){        
+        window.setTimeout(this.updateAiTurn.bind(this), 3000);
+      } 
     //3. if it does not match, signal an error and trigger ai to play sequence again
+    } else {  
+      console.log("Incorrect! Player sequence is: ");
+      console.log(this.playerPanelSequence);
+      console.log("and ai sequence is: ");
+      console.log(this.aiPanelSequence);
+
+      //need version of updateAiTurn that just replays without updating -
+    }
+        
     return true;
   }
   updateAiTurn(panelId, aiCurrentTurn){
@@ -105,6 +127,8 @@ class App extends React.Component {
 
     if(!aiCurrentTurn){
       aiCurrentTurn = 0;
+      this.isPlayerTurn = false;
+      this.playerPanelSequence = this.aiPanelSequence.slice();
       if(this.turn === 0){
         this.turn = 1;
       }            
@@ -117,19 +141,23 @@ class App extends React.Component {
           count: this.turn
         }));
         this.turn = ++this.turn;
-        //update count to match turn        
+        //update count to match turn
+        this.isPlayerTurn = true;        
         return true;
       }      
     }
     aiCurrentTurn += 1;
     //newPanelId should be  either item in sequence[aiCurrentTurn-1] or a new random sequence if at end of array
     //if it is a new random sequence it should be pushed on to sequence array.
-    if(this.aiPanelSequence.length >= aiCurrentTurn){
-      newPanelId = this.aiPanelSequence[aiCurrentTurn-1];
-    } else {
+    let shouldAddToSequence = this.aiPanelSequence.length < aiCurrentTurn;
+    if(shouldAddToSequence){
       //get random panel id using generateRandomPanelSequence(random) and then push onto sequence
       newPanelId = this.generateRandomPanelSequence();    
       this.aiPanelSequence.push(newPanelId);
+      //now update player sequence to match it
+      this.playerPanelSequence.push(newPanelId);
+    } else {  
+      newPanelId = this.aiPanelSequence[aiCurrentTurn-1];
     }
     
     //activate current panel with newPanelId
@@ -139,13 +167,14 @@ class App extends React.Component {
     window.setTimeout(this.updateAiTurn.bind(this, newPanelId, aiCurrentTurn), this.panelPlaySpeed);
     return false;
   }
+
   activatePanel(panelId){    
     this.setState((prevState, props) => ({
       activePanel: panelId
     }));
-    this.playPanelSound(panelId);
-    
+    this.playPanelSound(panelId);  
   }
+
   deactivatePanel(panelId){
     this.setState((prevSate, props) => ({
       activePanel: ''
@@ -178,10 +207,10 @@ class App extends React.Component {
         this.panelSound.src = currentSound;
         
       this.panelSound.play();   
-      console.log('panel ' + panelId + ' turned on!');
+      //console.log('panel ' + panelId + ' turned on!');
   }
   stopPanelSound(panelId){
-    console.log('panel ' + panelId + ' turned off!'); 
+    //console.log('panel ' + panelId + ' turned off!'); 
   }
   generateRandomPanelSequence(random){
   /* helper function for takeTurn*/
