@@ -34,7 +34,7 @@ class App extends React.Component {
     //set some defaults for configuring the game
     this.turnsToWin = 20; //number of turns before winning the game.
     this.panelPlaySpeed = 1000; //speed in miliseconds (so 1000 = 1 second)
-    this.debug = true;  //set to true to turn on debug mode
+    this.debug = false;  //set to true to turn on debug mode
   }
   render() {
     return <Game panelClicked={this.state.activePanel} 
@@ -50,41 +50,52 @@ class App extends React.Component {
   /********************************************************************/
   handlePanelClick(panelClicked, clickEvent){
     /*takes a reference 'panel' to panel object*/
-    if(this.isPlayerTurn){
-      this.activatePanel(panelClicked.props.id);
-      return true;
-    }
+    if(this.isOn){
+      if(this.isPlayerTurn){
+        this.activatePanel(panelClicked.props.id);
+        return true;
+      }
+    }    
     return false;    
   } 
   handlePanelUnClick(panelClicked, clickEvent) {
-    if(this.isPlayerTurn){
-      this.deactivatePanel(panelClicked.props.id);
-      this.updatePlayerTurn(panelClicked.props.id);
+    if(this.isOn){
+      if(this.isPlayerTurn){
+        this.deactivatePanel(panelClicked.props.id);
+        this.updatePlayerTurn(panelClicked.props.id);
       return true;
-    }
+      }
+    }    
     return false;    
   }
   handleOnButtonClick(clickEvent){
     /*Toggles on state*/
     this.isOn = !this.isOn;
+    this.isGameRunning = false;
     return true;
   }
   handleStartButtonClick(clickEvent){
     /* toggles isGameRunning and calls takeTurn */    
     
     //button only works if the console turned on and game not currently running.
-    if(this.isOn && !this.isGameRunning){
-      console.log('start button clicked!');
-      //toggles isGameRunning
-      this.isGameRunning = true;      
-      //call takeTurn
-      this.updateAiTurn();
-      return true;
-    }else if(this.debug){
+    if(this.isOn){
+      if(!this.isGameRunning){
+        console.log('start button clicked!');
+        //toggles isGameRunning
+        this.isGameRunning = true;      
+        //call takeTurn
+        this.updateAiTurn();
+        return true;
+      } else {
+        this.resetGame();
+      }
+      
+    } else if(this.debug){
       this.isGameRunning = true;
       this.updateAiTurn();
       return true;
     }
+    
     return false;
     
   }
@@ -95,6 +106,17 @@ class App extends React.Component {
   /********************************************************************/
   /*Game Engine                                                       */
   /********************************************************************/
+  resetGame(){
+    this.aiPanelSequence = [];
+    this.playerPanelSequence = [];
+    this.turn = 0;
+    this.setState((prevState, props) => ({
+      count: 0,
+      activePanel: ''
+    }));
+    this.updateAiTurn();
+  }
+
   updatePlayerTurn(panelId){
     
     //1. check to see if panelId matches next item in sequence
@@ -103,16 +125,19 @@ class App extends React.Component {
       this.playerPanelSequence.shift();
       console.log("correct!");
       // 2a. check to see if sequence is over with. if it is, then switch to ai player
-      //     and generate new sequence
+      //     and generate new sequence 
       if(this.playerPanelSequence.length < 1){        
-        window.setTimeout(this.updateAiTurn.bind(this), 3000);
+        window.setTimeout(this.updateAiTurn.bind(this), this.panelPlaySpeed);
       } 
-    //3. if it does not match, signal an error and trigger ai to play sequence again
+    //3. it does not match, 
     } else {  
-      console.log("Incorrect! Player sequence is: ");
-      console.log(this.playerPanelSequence);
-      console.log("and ai sequence is: ");
-      console.log(this.aiPanelSequence);
+      //3.a. signal an error and trigger ai to play sequence again
+      console.log("Incorrect!");
+
+      //console.log("Player sequence is: ");
+      //console.log(this.playerPanelSequence);
+      //console.log("and ai sequence is: ");
+      //console.log(this.aiPanelSequence);
 
       //need version of updateAiTurn that just replays without updating -
     }
@@ -167,7 +192,12 @@ class App extends React.Component {
     window.setTimeout(this.updateAiTurn.bind(this, newPanelId, aiCurrentTurn), this.panelPlaySpeed);
     return false;
   }
-
+  aiPlaySequence(){
+    //STUB - a game loop that goes through playing each step in the sequence untill the end is reached
+    //  calls update to add new element to sequence and play that sequence as well
+    //  update will add new step to sequence, make copy for player, and update turn.
+    //  
+  }
   activatePanel(panelId){    
     this.setState((prevState, props) => ({
       activePanel: panelId
