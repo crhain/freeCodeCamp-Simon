@@ -9,14 +9,15 @@ class App extends React.Component {
     //set the games state object
     this.state = {
       isOn: true, //temporarily set to true for testing
-      isStrict: false,      
+      isStrict: false,
+      count: 0,      
       activePanel: ''
     };
 
     this.isGameRunning = false;
     this.isPlayerTurn = false;
     this.isSuccess = true;
-    this.turn = 1; //turn one means 1 panel played, turn 2 means 2, etc.
+    this.turn = 0;    
     this.aiPanelSequence = [];
     this.playerPanelSequence = [];
     
@@ -32,6 +33,7 @@ class App extends React.Component {
     this.panelSound = new Audio();
 
     //set some defaults for configuring the game
+    this.turnsToWin = 20; //number of turns before winning the game.
     this.panelPlaySpeed = 1000; //speed in miliseconds (so 1000 = 1 second)
     this.debug = true;  //set to true to turn on debug mode
   }
@@ -40,6 +42,7 @@ class App extends React.Component {
             onPanelClick={this.handlePanelClick} 
             onPanelUnClick={ this.handlePanelUnClick }
             onStartClick={ this.handleStartButtonClick }
+            count={this.state.count}
             />;
   }
   /********************************************************************/
@@ -101,12 +104,19 @@ class App extends React.Component {
 
     if(!aiCurrentTurn){
       aiCurrentTurn = 0;
+      if(this.turn === 0){
+        this.turn = 1;
+      }            
     }
     if(panelId){
       this.deactivatePanel(panelId);
       //check to see if ai  has played full sequence, and if it has, update turn
       if(aiCurrentTurn === this.turn){
+        this.setState((prevState, props) => ({
+          count: this.turn
+        }));
         this.turn = ++this.turn;
+        //update count to match turn        
         return true;
       }      
     }
@@ -123,6 +133,7 @@ class App extends React.Component {
     
     //activate current panel with newPanelId
     this.activatePanel(newPanelId);
+    
     //call this function again after pnaelPlaySpeed amount of time
     window.setTimeout(this.updateAiTurn.bind(this, newPanelId, aiCurrentTurn), this.panelPlaySpeed);
     return false;
