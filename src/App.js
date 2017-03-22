@@ -8,12 +8,11 @@ class App extends React.Component {
     super(props);
     //set the games state object
     this.state = {
-      isOn: true, //temporarily set to true for testing
-      isStrict: false,
       count: 0,      
       activePanel: ''
     };
-
+    this.isOn = false;
+    this.isStrict = false;
     this.isGameRunning = false;
     this.isPlayerTurn = false;
     this.isSuccess = true;
@@ -42,6 +41,7 @@ class App extends React.Component {
             onPanelClick={this.handlePanelClick} 
             onPanelUnClick={ this.handlePanelUnClick }
             onStartClick={ this.handleStartButtonClick }
+            onOnClick={ this.handleOnButtonClick }
             count={this.state.count}
             />;
   }
@@ -60,13 +60,14 @@ class App extends React.Component {
   }
   handleOnButtonClick(clickEvent){
     /*Toggles on state*/
+    this.isOn = !this.isOn;
     return true;
   }
   handleStartButtonClick(clickEvent){
     /* toggles isGameRunning and calls takeTurn */    
     
     //button only works if the console turned on and game not currently running.
-    if(this.state.isOn && !this.isGameRunning){
+    if(this.isOn && !this.isGameRunning){
       console.log('start button clicked!');
       //toggles isGameRunning
       this.isGameRunning = true;      
