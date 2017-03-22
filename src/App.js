@@ -111,7 +111,7 @@ class App extends React.Component {
       }      
     }
     aiCurrentTurn += 1;
-    //NEED TO WRITE: newPanelId should be  either item in sequence[aiCurrentTurn-1] or a new random sequence if at end of array
+    //newPanelId should be  either item in sequence[aiCurrentTurn-1] or a new random sequence if at end of array
     //if it is a new random sequence it should be pushed on to sequence array.
     if(this.aiPanelSequence.length >= aiCurrentTurn){
       newPanelId = this.aiPanelSequence[aiCurrentTurn-1];
@@ -126,8 +126,6 @@ class App extends React.Component {
     //call this function again after pnaelPlaySpeed amount of time
     window.setTimeout(this.updateAiTurn.bind(this, newPanelId, aiCurrentTurn), this.panelPlaySpeed);
     return false;
-        
-    //let sequence = this.aiPanelSequence.slice();
   }
   activatePanel(panelId){    
     this.setState((prevState, props) => ({
