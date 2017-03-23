@@ -39,8 +39,6 @@ You can find the most recent version of this guide [here](https://github.com/fac
 CHANGES AND ADDITIONS 
 ==================================================
 
-
-2. rename this.turn to this.step
 4. rename aiPanelSequence to aiSteps?
 5. rename playerPanelSequence to playerSteps?
 

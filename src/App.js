@@ -16,7 +16,7 @@ class App extends React.Component {
     this.isGameRunning = false;
     this.isPlayerTurn = false;
     this.isSuccess = true;
-    this.turn = 0;    
+    this.step = 0;    
     this.aiPanelSequence = [];
     this.playerPanelSequence = [];
     
@@ -32,9 +32,9 @@ class App extends React.Component {
     this.panelSound = new Audio();
 
     //set some defaults for configuring the game
-    this.turnsToWin = 20; //number of turns before winning the game.
+    this.stepsToWin = 20; //number of steps before winning the game.
     this.panelPlaySpeed = 1000; //speed in miliseconds (so 1000 = 1 second)
-    this.debug = false;  //set to true to turn on debug mode
+    this.debug = false;  //set to true to step on debug mode
 
     //some constants
     this.ERROR_MESSAGE = "!!";
@@ -154,7 +154,7 @@ class App extends React.Component {
     if(status){
       update = status;
     } else{
-      update = this.turn;
+      update = this.step;
     }
     this.setState(() => ({
       countDisplayText: update
@@ -241,7 +241,7 @@ class App extends React.Component {
   aiPlayerTurn(){        
     //set player sequence to match ai sequence
     this.playerPanelSequence = this.aiPanelSequence.slice();
-    //  update will add new step to sequence, make copy for player, and update turn.
+    //  update will add new step to sequence, make copy for player, and update step.
     this.aiUpdate();
     // play panel sequence
     this.aiPlaySequence();
@@ -256,11 +256,11 @@ class App extends React.Component {
     this.aiPanelSequence.push(newStep);
     //now update player sequence to match it
     this.playerPanelSequence.push(newStep);
-    //update turn.
-    this.turn = ++this.turn;
+    //update step.
+    this.step = ++this.step;
   }
-  //aiPLaySequence(panelID: string, aiCurrentTurn: int) - plays current sequence of panels
-  aiPlaySequence(panelId = undefined, aiCurrentTurn = undefined){    
+  //aiPLaySequence(panelID: string, aiCurrentStep: int) - plays current sequence of panels
+  aiPlaySequence(panelId = undefined, aiCurrentStep = undefined){    
     //short circuit sequence if game switched off
     if(!this.isOn){ return true; }
     if(this.state.countDisplayText === this.ERROR_MESSAGE){
@@ -269,24 +269,24 @@ class App extends React.Component {
     let sequenceToPlay = this.aiPanelSequence,
         panelToPlay;
     //if this is first time running sequence, set some state
-    if(!aiCurrentTurn){
-      aiCurrentTurn = 0;
+    if(!aiCurrentStep){
+      aiCurrentStep = 0;
       this.isPlayerTurn = false;                              
     }
     //if function called recursively
     if(panelId){
       this.deactivatePanel(panelId);
       //stop recursive call if sequence complete
-      if(aiCurrentTurn === this.turn){
+      if(aiCurrentStep === this.step){
         this.isPlayerTurn = true;                    
         return true;
       }      
     }
-    aiCurrentTurn += 1;
-    panelToPlay = this.aiPanelSequence[aiCurrentTurn-1];
+    aiCurrentStep += 1;
+    panelToPlay = this.aiPanelSequence[aiCurrentStep-1];
     this.activatePanel(panelToPlay);
     //call next step in sequence
-    window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentTurn), this.panelPlaySpeed);
+    window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentStep), this.panelPlaySpeed);
     return false;    
   }  
   //resetGame() - resests game state and interface
@@ -294,7 +294,7 @@ class App extends React.Component {
     this.panelSound.pause();
     this.aiPanelSequence = [];
     this.playerPanelSequence = [];
-    this.turn = 0;
+    this.step = 0;
     this.setState((prevState, props) => ({
       countDisplayText: 0,
       activePanel: ''
