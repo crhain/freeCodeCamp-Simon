@@ -35,6 +35,27 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
+
+CHANGES AND ADDITIONS 
+==================================================
+
+1. ADD handleError()
+This sounds error sound, flashes count display with !!, and ultimatley flashes panel red.
+
+2. rename this.turn to this.step
+3. rename count to countDisplay
+ because it displays more than just the count
+4. rename aiPanelSequence to aiSteps?
+5. rename playerPanelSequence to playerSteps?
+
+6. change updateCount() to updateCountDisplay(status = undefined)
+this function just sets countDisplay to match current step, but it can also display an optional status if status parameter set.
+
+7. ADD strict button functionality
+8. ADD css styling 
+9. add labels for buttons 
+10. and visual effects for control buttons
+
 ## Table of Contents
 
 - [Updating to New Releases](#updating-to-new-releases)
