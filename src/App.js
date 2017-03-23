@@ -48,6 +48,9 @@ class App extends React.Component {
   /********************************************************************/
   /*Wrapper methods for control clicks                                */
   /********************************************************************/
+
+  //handlePanelClick(panelClicked: object, clickEvent: object) -
+  // handles activation of panels
   handlePanelClick(panelClicked, clickEvent){
     /*takes a reference 'panel' to panel object*/
     if(this.isOn){
@@ -57,7 +60,9 @@ class App extends React.Component {
       }
     }    
     return false;    
-  } 
+  }
+  //handlePanelUnClick(clickEvent: object) - deactivate a panel when it loses focus
+  // or mouse button is released
   handlePanelUnClick(panelClicked, clickEvent) {
     if(this.isOn){
       if(this.isPlayerTurn){
@@ -68,6 +73,7 @@ class App extends React.Component {
     }    
     return false;    
   }
+  //handleOnButtonClick(clickEvent: object) - turn game on and off
   handleOnButtonClick(clickEvent){
     /*Toggles on state*/
     this.isOn = !this.isOn;
@@ -75,9 +81,8 @@ class App extends React.Component {
     this.resetGame();
     return true;
   }
-  handleStartButtonClick(clickEvent){
-    /* toggles isGameRunning and calls takeTurn */    
-    
+  //handleStartButtonClick(clickEvent: object) - start the ball rolling
+  handleStartButtonClick(clickEvent){        
     //button only works if the console turned on and game not currently running.
     if(this.isOn){
       if(!this.isGameRunning){
@@ -90,17 +95,16 @@ class App extends React.Component {
       } else {
         this.resetGame();
         this.aiPlayerTurn();
-      }
-      
+      } 
     } else if(this.debug){
       this.isGameRunning = true;
       this.aiPlayerTurn();
       return true;
     }
-    
     return false;
     
   }
+  //handleStrictButtonClick(clickEvent: object) - switch on strict mode
   handleStrictButtonClick(clickEvent){
     /* toggles strict mode */
     return true;
@@ -178,14 +182,15 @@ class App extends React.Component {
 
     let sequenceToPlay = this.aiPanelSequence,
         panelToPlay;
-    
+    //if this is first time running sequence, set some state
     if(!aiCurrentTurn){
       aiCurrentTurn = 0;
       this.isPlayerTurn = false;                              
     }
+    //if function called recursively
     if(panelId){
       this.deactivatePanel(panelId);
-      //check to see if ai  has played full sequence, and if it has, update turn
+      //stop recursive call if sequence complete
       if(aiCurrentTurn === this.turn){
         this.isPlayerTurn = true;                    
         return true;
@@ -193,9 +198,8 @@ class App extends React.Component {
     }
     aiCurrentTurn += 1;
     panelToPlay = this.aiPanelSequence[aiCurrentTurn-1];
-    //activate current panel with newPanelId
     this.activatePanel(panelToPlay);
-    //call this function again after pnaelPlaySpeed amount of time
+    //call next step in sequence
     window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentTurn), this.panelPlaySpeed);
     return false;    
   }
