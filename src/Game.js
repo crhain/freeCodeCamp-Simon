@@ -7,7 +7,7 @@ class Game extends React.Component {
   render() {
     return (
       <div id='game'>
-        <Control id="control-panel" onStartClick={ this.props.onStartClick } count={this.props.count} onOnClick={ this.props.onOnClick } />
+        <Control id="control-panel" onStartClick={ this.props.onStartClick } countDisplayText={this.props.countDisplayText} onOnClick={ this.props.onOnClick } />
         <Panel id='green' panelClicked={this.props.panelClicked} onPanelClick={ this.props.onPanelClick } onPanelUnClick={ this.props.onPanelUnClick } />
         <Panel id='red' panelClicked={this.props.panelClicked} onPanelClick={ this.props.onPanelClick } onPanelUnClick={ this.props.onPanelUnClick } />
         <Panel id='blue' panelClicked={this.props.panelClicked} onPanelClick={ this.props.onPanelClick } onPanelUnClick={ this.props.onPanelUnClick } />

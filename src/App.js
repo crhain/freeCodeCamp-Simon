@@ -8,7 +8,7 @@ class App extends React.Component {
     super(props);
     //set the games state object
     this.state = {
-      count: 0,      
+      countDisplayText: 0,      
       activePanel: ''
     };
     this.isOn = false;
@@ -45,7 +45,7 @@ class App extends React.Component {
             onPanelUnClick={ this.handlePanelUnClick }
             onStartClick={ this.handleStartButtonClick }
             onOnClick={ this.handleOnButtonClick }
-            count={this.state.count}
+            countDisplayText={this.state.countDisplayText}
             />;
   }
   /********************************************************************/
@@ -147,9 +147,9 @@ class App extends React.Component {
   isCorrectPanel(panelId){
     return panelId === this.playerPanelSequence[0];
   }
-  //updateCount(status: string) - updates count panel with current step and
+  //updateCountDisplayText(status: string) - updates count panel with current step and
   // can also pass optional status to update panel with.
-  updateCount(status = undefined){
+  updateCountDisplayText(status = undefined){
     let update;
     if(status){
       update = status;
@@ -157,13 +157,13 @@ class App extends React.Component {
       update = this.turn;
     }
     this.setState(() => ({
-      count: update
+      countDisplayText: update
     }));
   }
   //handleError() - handles errors on button presses
   handleError(){
     this.playPanelSound("error");
-    this.updateCount(this.ERROR_MESSAGE);    
+    this.updateCountDisplayText(this.ERROR_MESSAGE);    
   }
   //playPanelSound(panelID: string) - plays sound associated with panel
   // use panelID = 'error' to play error sound 
@@ -245,8 +245,8 @@ class App extends React.Component {
     this.aiUpdate();
     // play panel sequence
     this.aiPlaySequence();
-    //update count
-    this.updateCount();
+    //update countDisplayText
+    this.updateCountDisplayText();
     //switch back to player turn
   }
   //aiUPdate() - adds a new panel to sequence played by ai and increases step
@@ -263,8 +263,8 @@ class App extends React.Component {
   aiPlaySequence(panelId = undefined, aiCurrentTurn = undefined){    
     //short circuit sequence if game switched off
     if(!this.isOn){ return true; }
-    if(this.state.count === this.ERROR_MESSAGE){
-      this.updateCount();     
+    if(this.state.countDisplayText === this.ERROR_MESSAGE){
+      this.updateCountDisplayText();     
     }
     let sequenceToPlay = this.aiPanelSequence,
         panelToPlay;
@@ -296,7 +296,7 @@ class App extends React.Component {
     this.playerPanelSequence = [];
     this.turn = 0;
     this.setState((prevState, props) => ({
-      count: 0,
+      countDisplayText: 0,
       activePanel: ''
     }));    
   }

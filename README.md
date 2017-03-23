@@ -39,12 +39,8 @@ You can find the most recent version of this guide [here](https://github.com/fac
 CHANGES AND ADDITIONS 
 ==================================================
 
-1. ADD handleError()
-This sounds error sound, flashes count display with !!, and ultimatley flashes panel red.
 
 2. rename this.turn to this.step
-3. rename count to countDisplay
- because it displays more than just the count
 4. rename aiPanelSequence to aiSteps?
 5. rename playerPanelSequence to playerSteps?
 
