@@ -35,6 +35,9 @@ class App extends React.Component {
     this.turnsToWin = 20; //number of turns before winning the game.
     this.panelPlaySpeed = 1000; //speed in miliseconds (so 1000 = 1 second)
     this.debug = false;  //set to true to turn on debug mode
+
+    //some constants
+    this.ERROR_MESSAGE = "!!";
   }
   render() {
     return <Game panelClicked={this.state.activePanel} 
@@ -112,22 +115,103 @@ class App extends React.Component {
   /********************************************************************/
   /*Game Engine                                                       */
   /********************************************************************/
-  
-  //resetGame() - resests game state and interface
-  resetGame(){
-    this.panelSound.pause();
-    this.aiPanelSequence = [];
-    this.playerPanelSequence = [];
-    this.turn = 0;
+  //activatePanel(panelID: string) - activates panel with panelID (ex. "green")
+  activatePanel(panelId){    
+    let newPanelId = panelId;
     this.setState((prevState, props) => ({
-      count: 0,
-      activePanel: ''
-    }));    
+      activePanel: panelId
+    }));
+    if(this.isPlayerTurn){
+      if(!this.isCorrectPanel(panelId)){
+        this.handleError();
+        return false;
+      } 
+    }    
+    this.playPanelSound(newPanelId);
+    return true;              
   }
+  //deactivatePanel(panelID: string) - deactivates panel with panelID (ex. "green")
+  deactivatePanel(panelId){
+    let newPanelId = panelId;
+    this.setState((prevSate, props) => ({
+      activePanel: ''
+    }));
+    if(this.isPlayerTurn){
+      if(!this.isCorrectPanel(panelId)){
+        newPanelId = "error";
+      } 
+    }    
+    this.stopPanelSound(newPanelId);    
+  }
+  //isCorrectPanel(panelId: string)
+  isCorrectPanel(panelId){
+    return panelId === this.playerPanelSequence[0];
+  }
+  //updateCount(status: string) - updates count panel with current step and
+  // can also pass optional status to update panel with.
+  updateCount(status = undefined){
+    let update;
+    if(status){
+      update = status;
+    } else{
+      update = this.turn;
+    }
+    this.setState(() => ({
+      count: update
+    }));
+  }
+  //handleError() - handles errors on button presses
+  handleError(){
+    this.playPanelSound("error");
+    this.updateCount(this.ERROR_MESSAGE);    
+  }
+  //playPanelSound(panelID: string) - plays sound associated with panel
+  // use panelID = 'error' to play error sound 
+  playPanelSound(panelId){
+    const sound1 = "media/simonSound1.mp3",
+        sound2 = "media/simonSound2.mp3",
+        sound3 = "media/simonSound3.mp3",
+        sound4 = "media/simonSound4.mp3",
+        soundError = sound4;
+    let currentSound = "";
+        
+      switch(panelId){
+            case "green":
+              currentSound = sound1;
+              break;
+            case "red":
+              currentSound = sound2;
+              break;
+            case "blue":
+              currentSound = sound3;
+              break;
+            case "yellow":
+              currentSound = sound4;
+              break;
+            case "error":
+              currentSound = soundError; //temp sound
+              break;
+            default:
+                console.log("WRONG ID FOR PANEL! CAN'T PLAY SOUND!");
+        }        
+        
+      if(currentSound != ""){
+        this.panelSound.src = currentSound;
+        this.panelSound.play();
+      }  
+         
+      //console.log('panel ' + panelId + ' turned on!');
+  }
+  //stopPanelSound(panelID: string) - plays sound associated with panel
+  // use panelID = 'error' to play error sound 
+  //NOTE: currently not used because sounds do not loop
+  stopPanelSound(panelId){
+    //console.log('panel ' + panelId + ' turned off!'); 
+  }  
   //updatePlayerTurn(panelId: string) - main logic for evaluating player panel presses
   updatePlayerTurn(panelId){
     //1. check to see if panelId matches next item in sequence
-    if(panelId === this.playerPanelSequence[0]){
+    if(this.isCorrectPanel(panelId)){
       //2. if it does, then remove current item from sequence
       this.playerPanelSequence.shift();
       console.log("correct!");
@@ -154,7 +238,7 @@ class App extends React.Component {
     return true;
   }
   //aiPlayerTurn() - game loop for ai turn
-  aiPlayerTurn(){    
+  aiPlayerTurn(){        
     //set player sequence to match ai sequence
     this.playerPanelSequence = this.aiPanelSequence.slice();
     //  update will add new step to sequence, make copy for player, and update turn.
@@ -179,7 +263,9 @@ class App extends React.Component {
   aiPlaySequence(panelId = undefined, aiCurrentTurn = undefined){    
     //short circuit sequence if game switched off
     if(!this.isOn){ return true; }
-
+    if(this.state.count === this.ERROR_MESSAGE){
+      this.updateCount();     
+    }
     let sequenceToPlay = this.aiPanelSequence,
         panelToPlay;
     //if this is first time running sequence, set some state
@@ -202,67 +288,17 @@ class App extends React.Component {
     //call next step in sequence
     window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentTurn), this.panelPlaySpeed);
     return false;    
-  }
-  //updateCount() - updates count panel
-  updateCount(){
-    this.setState(() => ({
-      count: this.turn
-    }));
-  }
-  //activatePanel(panelID: string) - activates panel with panelID (ex. "green")
-  activatePanel(panelId){    
+  }  
+  //resetGame() - resests game state and interface
+  resetGame(){
+    this.panelSound.pause();
+    this.aiPanelSequence = [];
+    this.playerPanelSequence = [];
+    this.turn = 0;
     this.setState((prevState, props) => ({
-      activePanel: panelId
-    }));
-    this.playPanelSound(panelId);  
-  }
-  //deactivatePanel(panelID: string) - deactivates panel with panelID (ex. "green")
-  deactivatePanel(panelId){
-    this.setState((prevSate, props) => ({
+      count: 0,
       activePanel: ''
-    }));
-    this.stopPanelSound(panelId);
-  }
-  //playPanelSound(panelID: string) - plays sound associated with panel
-  // use panelID = 'error' to play error sound 
-  playPanelSound(panelId){
-    const sound1 = "media/simonSound1.mp3",
-        sound2 = "media/simonSound2.mp3",
-        sound3 = "media/simonSound3.mp3",
-        sound4 = "media/simonSound4.mp3",
-        soundError = "";
-    let currentSound = "";
-        
-      switch(panelId){
-            case "green":
-                currentSound = sound1;
-                break;
-            case "red":
-                currentSound = sound2;
-                break;
-            case "blue":
-                currentSound = sound3;
-                break;
-            case "yellow":
-                currentSound = sound4;
-                break;
-            //case "error":    
-            default:
-                console.log("WRONG ID FOR PANEL! CAN'T PLAY SOUND!");
-        }        
-        
-      if(currentSound != ""){
-        this.panelSound.src = currentSound;
-        this.panelSound.play();
-      }  
-         
-      //console.log('panel ' + panelId + ' turned on!');
-  }
-  //stopPanelSound(panelID: string) - plays sound associated with panel
-  // use panelID = 'error' to play error sound 
-  //NOTE: currently not used because sounds do not loop
-  stopPanelSound(panelId){
-    //console.log('panel ' + panelId + ' turned off!'); 
+    }));    
   }
   //generateRandomPanelSequence(random: int) - returns a random panelId string
   generateRandomPanelSequence(random = undefined){
