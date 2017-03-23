@@ -84,7 +84,7 @@ class App extends React.Component {
         //toggles isGameRunning
         this.isGameRunning = true;      
         //call takeTurn
-        this.updateAiTurn();
+        this.aiPlayerTurn();
         return true;
       } else {
         this.resetGame();
@@ -92,7 +92,7 @@ class App extends React.Component {
       
     } else if(this.debug){
       this.isGameRunning = true;
-      this.updateAiTurn();
+      this.aiPlayerTurn();
       return true;
     }
     
@@ -114,7 +114,7 @@ class App extends React.Component {
       count: 0,
       activePanel: ''
     }));
-    this.updateAiTurn();
+    this.aiPlayerTurn();
   }
 
   updatePlayerTurn(panelId){
@@ -127,7 +127,7 @@ class App extends React.Component {
       // 2a. check to see if sequence is over with. if it is, then switch to ai player
       //     and generate new sequence 
       if(this.playerPanelSequence.length < 1){        
-        window.setTimeout(this.updateAiTurn.bind(this), this.panelPlaySpeed);
+        window.setTimeout(this.aiPlayerTurn.bind(this), this.panelPlaySpeed);
       } 
     //3. it does not match, 
     } else {  
@@ -144,60 +144,63 @@ class App extends React.Component {
         
     return true;
   }
-  updateAiTurn(panelId, aiCurrentTurn){
-    /* computer player updates sequence to run with next move
-    and then runs sequence  */
-    //deactivate panel if it is active
-    let newPanelId;
+  aiPlayerTurn(){
+    //a game loop that goes through playing each step in the sequence untill the end is reached
+    //  calls update to add new element to sequence and play that sequence as well
+    
+    //set to ai player turn
+    this.isPlayerTurn = false;
+    //set player sequence to match ai sequence
+    this.playerPanelSequence = this.aiPanelSequence.slice();
+    //  update will add new step to sequence, make copy for player, and update turn.
+    this.aiUpdate();
+    // play panel sequence
+    this.aiPlaySequence();
+    //update count
+    this.updateCount();
+    //switch back to player turn
+    this.isPlayerTurn = true;
+  }
+
+  aiUpdate(){    
+    //add new step to sequence 
+    let newStep = this.generateRandomPanelSequence();    
+    this.aiPanelSequence.push(newStep);
+    //now update player sequence to match it
+    this.playerPanelSequence.push(newStep);
+    //update turn.
+    this.turn = ++this.turn;
+  }
+
+  aiPlaySequence(panelId = undefined, aiCurrentTurn = undefined){
+    let sequenceToPlay = this.aiPanelSequence,
+        panelToPlay;
 
     if(!aiCurrentTurn){
-      aiCurrentTurn = 0;
-      this.isPlayerTurn = false;
-      this.playerPanelSequence = this.aiPanelSequence.slice();
-      if(this.turn === 0){
-        this.turn = 1;
-      }            
+      aiCurrentTurn = 0;                              
     }
     if(panelId){
       this.deactivatePanel(panelId);
       //check to see if ai  has played full sequence, and if it has, update turn
-      if(aiCurrentTurn === this.turn){
-        this.setState((prevState, props) => ({
-          count: this.turn
-        }));
-        this.turn = ++this.turn;
-        //update count to match turn
-        this.isPlayerTurn = true;        
+      if(aiCurrentTurn === this.turn){                    
         return true;
       }      
     }
     aiCurrentTurn += 1;
-    //newPanelId should be  either item in sequence[aiCurrentTurn-1] or a new random sequence if at end of array
-    //if it is a new random sequence it should be pushed on to sequence array.
-    let shouldAddToSequence = this.aiPanelSequence.length < aiCurrentTurn;
-    if(shouldAddToSequence){
-      //get random panel id using generateRandomPanelSequence(random) and then push onto sequence
-      newPanelId = this.generateRandomPanelSequence();    
-      this.aiPanelSequence.push(newPanelId);
-      //now update player sequence to match it
-      this.playerPanelSequence.push(newPanelId);
-    } else {  
-      newPanelId = this.aiPanelSequence[aiCurrentTurn-1];
-    }
-    
+    panelToPlay = this.aiPanelSequence[aiCurrentTurn-1];
     //activate current panel with newPanelId
-    this.activatePanel(newPanelId);
-    
+    this.activatePanel(panelToPlay);
     //call this function again after pnaelPlaySpeed amount of time
-    window.setTimeout(this.updateAiTurn.bind(this, newPanelId, aiCurrentTurn), this.panelPlaySpeed);
-    return false;
+    window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentTurn), this.panelPlaySpeed);
+    return false;    
   }
-  aiPlaySequence(){
-    //STUB - a game loop that goes through playing each step in the sequence untill the end is reached
-    //  calls update to add new element to sequence and play that sequence as well
-    //  update will add new step to sequence, make copy for player, and update turn.
-    //  
+
+  updateCount(){
+    this.setState(() => ({
+      count: this.turn
+    }));
   }
+  
   activatePanel(panelId){    
     this.setState((prevState, props) => ({
       activePanel: panelId
