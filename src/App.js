@@ -126,20 +126,22 @@ class App extends React.Component {
       console.log("correct!");
       // 2a. check to see if sequence is over with. if it is, then switch to ai player
       //     and generate new sequence 
-      if(this.playerPanelSequence.length < 1){        
+      if(this.playerPanelSequence.length < 1){
+        this.isPlayerTurn = false;        
         window.setTimeout(this.aiPlayerTurn.bind(this), this.panelPlaySpeed);
       } 
     //3. it does not match, 
     } else {  
       //3.a. signal an error and trigger ai to play sequence again
       console.log("Incorrect!");
-
+      //need something to disable player hitting button but not disable deactivating current button???
+      this.isPlayerTurn = false;
+      this.playerPanelSequence = this.aiPanelSequence.slice();
+      window.setTimeout(this.aiPlaySequence.bind(this), this.panelPlaySpeed);
       //console.log("Player sequence is: ");
       //console.log(this.playerPanelSequence);
       //console.log("and ai sequence is: ");
-      //console.log(this.aiPanelSequence);
-
-      //need version of updateAiTurn that just replays without updating -
+      //console.log(this.aiPanelSequence);      
     }
         
     return true;
@@ -149,7 +151,7 @@ class App extends React.Component {
     //  calls update to add new element to sequence and play that sequence as well
     
     //set to ai player turn
-    this.isPlayerTurn = false;
+    //this.isPlayerTurn = false;
     //set player sequence to match ai sequence
     this.playerPanelSequence = this.aiPanelSequence.slice();
     //  update will add new step to sequence, make copy for player, and update turn.
@@ -159,7 +161,7 @@ class App extends React.Component {
     //update count
     this.updateCount();
     //switch back to player turn
-    this.isPlayerTurn = true;
+    //this.isPlayerTurn = true;
   }
 
   aiUpdate(){    
@@ -175,14 +177,16 @@ class App extends React.Component {
   aiPlaySequence(panelId = undefined, aiCurrentTurn = undefined){
     let sequenceToPlay = this.aiPanelSequence,
         panelToPlay;
-
+    
     if(!aiCurrentTurn){
-      aiCurrentTurn = 0;                              
+      aiCurrentTurn = 0;
+      this.isPlayerTurn = false;                              
     }
     if(panelId){
       this.deactivatePanel(panelId);
       //check to see if ai  has played full sequence, and if it has, update turn
-      if(aiCurrentTurn === this.turn){                    
+      if(aiCurrentTurn === this.turn){
+        this.isPlayerTurn = true;                    
         return true;
       }      
     }
