@@ -72,6 +72,7 @@ class App extends React.Component {
     /*Toggles on state*/
     this.isOn = !this.isOn;
     this.isGameRunning = false;
+    this.resetGame();
     return true;
   }
   handleStartButtonClick(clickEvent){
@@ -88,6 +89,7 @@ class App extends React.Component {
         return true;
       } else {
         this.resetGame();
+        this.aiPlayerTurn();
       }
       
     } else if(this.debug){
@@ -106,19 +108,20 @@ class App extends React.Component {
   /********************************************************************/
   /*Game Engine                                                       */
   /********************************************************************/
+  
+  //resetGame() - resests game state and interface
   resetGame(){
+    this.panelSound.pause();
     this.aiPanelSequence = [];
     this.playerPanelSequence = [];
     this.turn = 0;
     this.setState((prevState, props) => ({
       count: 0,
       activePanel: ''
-    }));
-    this.aiPlayerTurn();
+    }));    
   }
-
+  //updatePlayerTurn(panelId: string) - main logic for evaluating player panel presses
   updatePlayerTurn(panelId){
-    
     //1. check to see if panelId matches next item in sequence
     if(panelId === this.playerPanelSequence[0]){
       //2. if it does, then remove current item from sequence
@@ -146,12 +149,8 @@ class App extends React.Component {
         
     return true;
   }
-  aiPlayerTurn(){
-    //a game loop that goes through playing each step in the sequence untill the end is reached
-    //  calls update to add new element to sequence and play that sequence as well
-    
-    //set to ai player turn
-    //this.isPlayerTurn = false;
+  //aiPlayerTurn() - game loop for ai turn
+  aiPlayerTurn(){    
     //set player sequence to match ai sequence
     this.playerPanelSequence = this.aiPanelSequence.slice();
     //  update will add new step to sequence, make copy for player, and update turn.
@@ -161,9 +160,8 @@ class App extends React.Component {
     //update count
     this.updateCount();
     //switch back to player turn
-    //this.isPlayerTurn = true;
   }
-
+  //aiUPdate() - adds a new panel to sequence played by ai and increases step
   aiUpdate(){    
     //add new step to sequence 
     let newStep = this.generateRandomPanelSequence();    
@@ -173,8 +171,11 @@ class App extends React.Component {
     //update turn.
     this.turn = ++this.turn;
   }
+  //aiPLaySequence(panelID: string, aiCurrentTurn: int) - plays current sequence of panels
+  aiPlaySequence(panelId = undefined, aiCurrentTurn = undefined){    
+    //short circuit sequence if game switched off
+    if(!this.isOn){ return true; }
 
-  aiPlaySequence(panelId = undefined, aiCurrentTurn = undefined){
     let sequenceToPlay = this.aiPanelSequence,
         panelToPlay;
     
@@ -198,31 +199,34 @@ class App extends React.Component {
     window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentTurn), this.panelPlaySpeed);
     return false;    
   }
-
+  //updateCount() - updates count panel
   updateCount(){
     this.setState(() => ({
       count: this.turn
     }));
   }
-  
+  //activatePanel(panelID: string) - activates panel with panelID (ex. "green")
   activatePanel(panelId){    
     this.setState((prevState, props) => ({
       activePanel: panelId
     }));
     this.playPanelSound(panelId);  
   }
-
+  //deactivatePanel(panelID: string) - deactivates panel with panelID (ex. "green")
   deactivatePanel(panelId){
     this.setState((prevSate, props) => ({
       activePanel: ''
     }));
     this.stopPanelSound(panelId);
   }
+  //playPanelSound(panelID: string) - plays sound associated with panel
+  // use panelID = 'error' to play error sound 
   playPanelSound(panelId){
     const sound1 = "media/simonSound1.mp3",
         sound2 = "media/simonSound2.mp3",
         sound3 = "media/simonSound3.mp3",
-        sound4 = "media/simonSound4.mp3";
+        sound4 = "media/simonSound4.mp3",
+        soundError = "";
     let currentSound = "";
         
       switch(panelId){
@@ -238,19 +242,26 @@ class App extends React.Component {
             case "yellow":
                 currentSound = sound4;
                 break;
+            //case "error":    
             default:
                 console.log("WRONG ID FOR PANEL! CAN'T PLAY SOUND!");
-        }
-        this.panelSound.src = currentSound;
+        }        
         
-      this.panelSound.play();   
+      if(currentSound != ""){
+        this.panelSound.src = currentSound;
+        this.panelSound.play();
+      }  
+         
       //console.log('panel ' + panelId + ' turned on!');
   }
+  //stopPanelSound(panelID: string) - plays sound associated with panel
+  // use panelID = 'error' to play error sound 
+  //NOTE: currently not used because sounds do not loop
   stopPanelSound(panelId){
     //console.log('panel ' + panelId + ' turned off!'); 
   }
-  generateRandomPanelSequence(random){
-  /* helper function for takeTurn*/
+  //generateRandomPanelSequence(random: int) - returns a random panelId string
+  generateRandomPanelSequence(random = undefined){
   if(!random){
     random = this.getRandomIntInclusive(1, 4); //1 to 4 panels
   }
@@ -268,6 +279,8 @@ class App extends React.Component {
       return 'undefined';
     }
   }
+  //getRandomIntInclusive(min: int, max: int) - returns a random number between
+  // min and max that includes both.
   getRandomIntInclusive(min, max){
     min = Math.ceil(min);
     max = Math.floor(max);
