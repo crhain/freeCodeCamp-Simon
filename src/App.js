@@ -32,12 +32,12 @@ class App extends React.Component {
     this.panelSound = new Audio();
 
     //set some defaults for configuring the game
-    this.stepsToWin = 20; //number of steps before winning the game.
-    this.panelPlaySpeed = 1000; //speed in miliseconds (so 1000 = 1 second)
+    this.stepsToWin = 20; //number of steps before winning the game. 
     this.debug = false;  //set to true to step on debug mode
 
     //some constants
     this.ERROR_MESSAGE = "!!";
+    this.PLAY_SPEED = 1000; //speed in miliseconds (so 1000 = 1 second)
   }
   render() {
     return <Game panelClicked={this.state.activePanel} 
@@ -219,7 +219,7 @@ class App extends React.Component {
       //     and generate new sequence 
       if(this.playerPanelSequence.length < 1){
         this.isPlayerTurn = false;        
-        window.setTimeout(this.aiPlayerTurn.bind(this), this.panelPlaySpeed);
+        window.setTimeout(this.aiPlayerTurn.bind(this), this.PLAY_SPEED);
       } 
     //3. it does not match, 
     } else {  
@@ -228,7 +228,7 @@ class App extends React.Component {
       //need something to disable player hitting button but not disable deactivating current button???
       this.isPlayerTurn = false;
       this.playerPanelSequence = this.aiPanelSequence.slice();
-      window.setTimeout(this.aiPlaySequence.bind(this), this.panelPlaySpeed);
+      window.setTimeout(this.aiPlaySequence.bind(this), this.PLAY_SPEED);
       //console.log("Player sequence is: ");
       //console.log(this.playerPanelSequence);
       //console.log("and ai sequence is: ");
@@ -280,13 +280,16 @@ class App extends React.Component {
       if(aiCurrentStep === this.step){
         this.isPlayerTurn = true;                    
         return true;
-      }      
+      } 
+      //a pause between notes
+      window.setTimeout(this.aiPlaySequence.bind(this, undefined, aiCurrentStep), this.PLAY_SPEED/4);
+      return true;           
     }
     aiCurrentStep += 1;
     panelToPlay = this.aiPanelSequence[aiCurrentStep-1];
     this.activatePanel(panelToPlay);
     //call next step in sequence
-    window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentStep), this.panelPlaySpeed);
+    window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentStep), this.PLAY_SPEED);
     return false;    
   }  
   //resetGame() - resests game state and interface
