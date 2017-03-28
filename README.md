@@ -39,14 +39,11 @@ You can find the most recent version of this guide [here](https://github.com/fac
 CHANGES AND ADDITIONS 
 ==================================================
 
-4. rename aiPanelSequence to aiSteps?
-5. rename playerPanelSequence to playerSteps?
-
-8. ADD css styling 
-9. add labels for buttons 
-10. and visual effects for control buttons
-11. add error sound
-12. edit panel sounds and add functionality to play them continuously
+1. add labels for buttons 
+2. and visual effects for control buttons
+3. ADD css styling 
+4. add error sound
+5. edit panel sounds and add functionality to play them continuously
 
 ## Table of Contents
 

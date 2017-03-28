@@ -13,25 +13,29 @@ body {
   margin: 0 auto;
 }
 
-#blue{
+.panel:hover{
+  cursor: pointer;
+}
+
+.panel#blue{
   width: 90%;
   height: 50px;
   background: blue;
 }
 
-#green{
+.panel#green{
   width: 90%;
   height: 50px;
   background: green;
 }
 
-#yellow{
+.panel#yellow{
   width: 90%;
   height: 50px;
   background: yellow;
 }
 
-#red{
+.panel#red{
   width: 90%;
   height: 50px;
   background: red;
@@ -40,3 +44,32 @@ body {
 .panel-on{
   opacity: 0.5;
 }
+
+button{
+  width: 25px;
+  height: 25px;
+  border-radius: 25px;
+  box-shadow: 2px 2px 5px black;
+  outline: none;
+  border: 1px solid black;
+}
+
+button:active{
+  box-shadow: 1px 1px 2px black;  
+}
+
+#start-btn{
+  background-color: red;
+}
+
+#strict-btn{
+  background-color: yellow;
+}
+
+#on-btn{
+  background-color: blue;
+}
+
+
+
+
