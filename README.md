@@ -42,7 +42,6 @@ CHANGES AND ADDITIONS
 4. rename aiPanelSequence to aiSteps?
 5. rename playerPanelSequence to playerSteps?
 
-7. ADD strict button functionality
 8. ADD css styling 
 9. add labels for buttons 
 10. and visual effects for control buttons

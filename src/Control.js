@@ -7,7 +7,7 @@ class Control extends React.Component{
       <div>
         <div id="count">{ this.props.countDisplayText }</div>
         <button id="start-btn" onClick={ this.props.onStartClick }>Start</button>
-        <button id="strict-btn">Strict</button>
+        <button id="strict-btn" onClick={ this.props.onStrictClick }>Strict</button>
         <button id="on-btn" onClick={ this.props.onOnClick } >On/Off</button>        
       </div>
     );

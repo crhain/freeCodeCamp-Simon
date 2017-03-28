@@ -8,14 +8,13 @@ class App extends React.Component {
     super(props);
     //set the games state object
     this.state = {
-      countDisplayText: 0,      
+      countDisplayText: "00",      
       activePanel: ''
     };
     this.isOn = false;
     this.isStrict = false;
     this.isGameRunning = false;
     this.isPlayerTurn = false;
-    this.isSuccess = true;
     this.step = 0;    
     this.aiPanelSequence = [];
     this.playerPanelSequence = [];
@@ -45,6 +44,7 @@ class App extends React.Component {
             onPanelUnClick={ this.handlePanelUnClick }
             onStartClick={ this.handleStartButtonClick }
             onOnClick={ this.handleOnButtonClick }
+            onStrictClick={ this.handleStrictButtonClick }
             countDisplayText={this.state.countDisplayText}
             />;
   }
@@ -81,6 +81,7 @@ class App extends React.Component {
     /*Toggles on state*/
     this.isOn = !this.isOn;
     this.isGameRunning = false;
+    this.toggleStrictMode(false);
     this.resetGame();
     return true;
   }
@@ -110,11 +111,17 @@ class App extends React.Component {
   //handleStrictButtonClick(clickEvent: object) - switch on strict mode
   handleStrictButtonClick(clickEvent){
     /* toggles strict mode */
-    return true;
+    if(this.isOn){
+      this.toggleStrictMode();
+      console.log('strict mode is:' + this.isStrict);    
+    }    
   }
   /********************************************************************/
   /*Game Engine                                                       */
   /********************************************************************/
+  toggleStrictMode(state){
+    this.isStrict = state === undefined ? !this.isStrict : !!state;
+  }  
   //activatePanel(panelID: string) - activates panel with panelID (ex. "green")
   activatePanel(panelId){    
     let newPanelId = panelId;
@@ -163,7 +170,7 @@ class App extends React.Component {
   //handleError() - handles errors on button presses
   handleError(){
     this.playPanelSound("error");
-    this.updateCountDisplayText(this.ERROR_MESSAGE);    
+    this.updateCountDisplayText(this.ERROR_MESSAGE);        
   }
   //playPanelSound(panelID: string) - plays sound associated with panel
   // use panelID = 'error' to play error sound 
@@ -225,16 +232,15 @@ class App extends React.Component {
     } else {  
       //3.a. signal an error and trigger ai to play sequence again
       console.log("Incorrect!");
-      //need something to disable player hitting button but not disable deactivating current button???
+      //need something to disable player hitting button but not disable deactivating current button???      
       this.isPlayerTurn = false;
-      this.playerPanelSequence = this.aiPanelSequence.slice();
-      window.setTimeout(this.aiPlaySequence.bind(this), this.PLAY_SPEED);
-      //console.log("Player sequence is: ");
-      //console.log(this.playerPanelSequence);
-      //console.log("and ai sequence is: ");
-      //console.log(this.aiPanelSequence);      
-    }
-        
+      if(this.isStrict){
+        window.setTimeout(this.resetGame.bind(this), this.PLAY_SPEED);
+      } else{
+        this.playerPanelSequence = this.aiPanelSequence.slice();
+        window.setTimeout(this.aiPlaySequence.bind(this), this.PLAY_SPEED);      
+      }      
+    }        
     return true;
   }
   //aiPlayerTurn() - game loop for ai turn
