@@ -182,7 +182,7 @@ class App extends React.Component {
     if(status){
       update = status;
     } else{
-      update = this.step;
+      update = this.formatCountDisplayText(this.step);
     }
     this.setState(() => ({
       countDisplayText: update
@@ -344,6 +344,15 @@ class App extends React.Component {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;  
+  }
+  formatCountDisplayText(text){
+    text = "" + text;
+    if(text.length === 1){
+      text = "0" + text;
+    }
+
+    return text;
+
   }
 }
 
