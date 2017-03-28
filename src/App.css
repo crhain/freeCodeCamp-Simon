@@ -17,32 +17,41 @@ body {
   cursor: pointer;
 }
 
-.panel#blue{
+#blue{
   width: 90%;
   height: 50px;
-  background: blue;
+  background: #4444B0; /*rgb(68,68,176)*/
 }
 
-.panel#green{
+#green{
   width: 90%;
   height: 50px;
-  background: green;
+  background: #44B044; /*rgb(68, 176, 68)*/
 }
 
-.panel#yellow{
+#yellow{
   width: 90%;
   height: 50px;
-  background: yellow;
+  background: #B0B044; /*rgb(176, 176, 68)*/
 }
 
-.panel#red{
+#red{
   width: 90%;
   height: 50px;
-  background: red;
+  background: #B04444; /*rgb(176, 68, 68)*/
 }
 
-.panel-on{
-  opacity: 0.5;
+.panel-on#blue{
+  background-color: #0000FF;
+}
+.panel-on#green{
+  background-color: #00FF00;
+}
+.panel-on#yellow{
+  background-color: #FFFF00;
+}
+.panel-on#red{
+  background-color: #FF0000;
 }
 
 button{

@@ -39,9 +39,9 @@ You can find the most recent version of this guide [here](https://github.com/fac
 CHANGES AND ADDITIONS 
 ==================================================
 
-1. add labels for buttons 
-2. and visual effects for control buttons
-3. ADD css styling 
+1. and visual effects for control buttons
+2. ADD css styling
+3. Add error if player does not hit a panel within a given amount of time 
 4. add error sound
 5. edit panel sounds and add functionality to play them continuously
 
