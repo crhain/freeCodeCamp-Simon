@@ -8,7 +8,7 @@ class App extends React.Component {
     super(props);
     //set the games state object
     this.state = {
-      countDisplayText: "00",      
+      countDisplayText: "",      
       activePanel: ''
     };
     this.isOn = false;
@@ -36,6 +36,7 @@ class App extends React.Component {
 
     //some constants
     this.ERROR_MESSAGE = "!!";
+    this.ON_MESSAGE = "--";
     this.PLAY_SPEED = 1000; //speed in miliseconds (so 1000 = 1 second)
   }
   render() {
@@ -79,33 +80,12 @@ class App extends React.Component {
   //handleOnButtonClick(clickEvent: object) - turn game on and off
   handleOnButtonClick(clickEvent){
     /*Toggles on state*/
-    this.isOn = !this.isOn;
-    this.isGameRunning = false;
-    this.toggleStrictMode(false);
-    this.resetGame();
-    return true;
+    this.toggleOnMode();        
   }
   //handleStartButtonClick(clickEvent: object) - start the ball rolling
   handleStartButtonClick(clickEvent){        
     //button only works if the console turned on and game not currently running.
-    if(this.isOn){
-      if(!this.isGameRunning){
-        console.log('start button clicked!');
-        //toggles isGameRunning
-        this.isGameRunning = true;      
-        //call takeTurn
-        this.aiPlayerTurn();
-        return true;
-      } else {
-        this.resetGame();
-        this.aiPlayerTurn();
-      } 
-    } else if(this.debug){
-      this.isGameRunning = true;
-      this.aiPlayerTurn();
-      return true;
-    }
-    return false;
+    this.startGame();
     
   }
   //handleStrictButtonClick(clickEvent: object) - switch on strict mode
@@ -119,6 +99,47 @@ class App extends React.Component {
   /********************************************************************/
   /*Game Engine                                                       */
   /********************************************************************/
+  toggleOnMode(state){    
+    if(state === undefined){
+      this.isOn = !this.isOn;
+    } else{
+      this.isOn = !!state;
+    }    
+    this.isGameRunning = false;
+    this.toggleStrictMode(false);    
+    this.resetGame(this.isOn ? this.ON_MESSAGE : "");
+  }
+  startGame(){
+    if(this.isOn){
+      if(!this.isGameRunning){
+        //console.log('start button clicked!');
+        this.isGameRunning = true;
+        this.resetGame();      
+        this.aiPlayerTurn();
+      } else {
+        this.resetGame();
+        this.aiPlayerTurn();
+      } 
+    } else if(this.debug){
+      this.isGameRunning = true;
+      this.resetGame();
+      this.aiPlayerTurn();    
+    }
+  }
+  //resetGame() - resests game state and interface
+  resetGame(countDisplayText){
+    if(countDisplayText === undefined){
+      countDisplayText = "00";
+    }
+    this.panelSound.pause();
+    this.aiPanelSequence = [];
+    this.playerPanelSequence = [];
+    this.step = 0;
+    this.setState((prevState, props) => ({
+      countDisplayText: countDisplayText,
+      activePanel: ''
+    }));    
+  }
   toggleStrictMode(state){
     this.isStrict = state === undefined ? !this.isStrict : !!state;
   }  
@@ -297,18 +318,7 @@ class App extends React.Component {
     //call next step in sequence
     window.setTimeout(this.aiPlaySequence.bind(this, panelToPlay, aiCurrentStep), this.PLAY_SPEED);
     return false;    
-  }  
-  //resetGame() - resests game state and interface
-  resetGame(){
-    this.panelSound.pause();
-    this.aiPanelSequence = [];
-    this.playerPanelSequence = [];
-    this.step = 0;
-    this.setState((prevState, props) => ({
-      countDisplayText: 0,
-      activePanel: ''
-    }));    
-  }
+  }    
   //generateRandomPanelSequence(random: int) - returns a random panelId string
   generateRandomPanelSequence(random = undefined){
   if(!random){
