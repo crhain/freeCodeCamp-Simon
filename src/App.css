@@ -67,6 +67,24 @@ button:active{
   box-shadow: 1px 1px 2px black;  
 }
 
+#count-display{
+  width: 60px;
+  height: 40px;
+  border: 5px solid black;
+  border-radius: 10px;
+  background-color: #3A1717;
+  
+}
+#count-display>div{
+  color: red;
+  font-size: 2rem;
+  text-align: center;
+}
+
+#count-display>div.is-off{
+  opacity: 0.25;
+}
+
 #start-btn{
   background-color: red;
 }
