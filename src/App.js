@@ -6,9 +6,14 @@ import Game from './Game';
 class App extends React.Component {
   constructor(props){
     super(props);
+    //some constants
+    this.ERROR_MESSAGE = "!!";
+    this.ON_MESSAGE = "--";
+    this.PLAY_SPEED = 1000; //speed in miliseconds (so 1000 = 1 second)
     //set the games state object
     this.state = {
-      countDisplayText: "",
+      countDisplayText: this.ON_MESSAGE,
+      on: false,
       strictOn: false,      
       activePanel: ''
     };
@@ -35,10 +40,7 @@ class App extends React.Component {
     this.stepsToWin = 20; //number of steps before winning the game. 
     this.debug = false;  //set to true to step on debug mode
 
-    //some constants
-    this.ERROR_MESSAGE = "!!";
-    this.ON_MESSAGE = "--";
-    this.PLAY_SPEED = 1000; //speed in miliseconds (so 1000 = 1 second)
+    
   }
   render() {
     return <Game panelClicked={this.state.activePanel} 
@@ -46,6 +48,7 @@ class App extends React.Component {
             onPanelUnClick={ this.handlePanelUnClick }
             onStartClick={ this.handleStartButtonClick }
             onOnClick={ this.handleOnButtonClick }
+            isOn ={ this.state.on }
             onStrictClick={ this.handleStrictButtonClick }
             strictOn={ this.state.strictOn }
             countDisplayText={this.state.countDisplayText}
@@ -107,9 +110,12 @@ class App extends React.Component {
     } else{
       this.isOn = !!state;
     }    
+    this.setState((prevState, props)=> ({
+      on: this.isOn
+    }));
     this.isGameRunning = false;
     this.toggleStrictMode(false);    
-    this.resetGame(this.isOn ? this.ON_MESSAGE : "");
+    this.resetGame(this.ON_MESSAGE);
   }
   
   startGame(){

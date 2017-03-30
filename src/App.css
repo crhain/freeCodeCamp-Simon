@@ -85,7 +85,7 @@ button:active{
 }
 
 #count-display>div.is-off{
-  opacity: 0.25;
+  opacity: 0.10;
 }
 
 #start, #on{

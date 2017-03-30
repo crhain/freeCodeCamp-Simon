@@ -9,7 +9,7 @@ class Control extends React.Component{
     return (
       <div>
         <h1>Simon(tm)</h1>
-        <CountDisplay countDisplayText={ this.props.countDisplayText }/>
+        <CountDisplay countDisplayText={ this.props.countDisplayText } isOn={this.props.isOn}/>
         <div id="start">
           <button id="start-btn" onClick={ this.props.onStartClick }></button>
           <label>Start</label>

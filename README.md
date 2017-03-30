@@ -39,13 +39,12 @@ You can find the most recent version of this guide [here](https://github.com/fac
 CHANGES AND ADDITIONS 
 ==================================================
 0. Add dim text on control-display by breaking it out to seperate component and using if statement to return it with is-on class or not
-1. Add light above strict button as above by breaking out into seperate component
-2. Add on/off toggle effect to on button by breaking out as above
-3. break out other two buttons as well
-4. Add error if player does not hit a panel within a given amount of time 
-5. add error sound
-6. Add final styling for all components; should use simple layout for mobile and round layout with control in center for desktop and tablet
-7. edit panel sounds and add functionality to play them continuously
+1. Add on/off toggle effect to on button by breaking out as above
+2. break out other two buttons as well
+3. Add error if player does not hit a panel within a given amount of time 
+4. add error sound
+5. Add final styling for all components; should use simple layout for mobile and round layout with control in center for desktop and tablet
+6. edit panel sounds and add functionality to play them continuously
 
 ## Table of Contents
 
