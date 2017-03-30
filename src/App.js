@@ -47,6 +47,7 @@ class App extends React.Component {
             onStartClick={ this.handleStartButtonClick }
             onOnClick={ this.handleOnButtonClick }
             onStrictClick={ this.handleStrictButtonClick }
+            strictOn={ this.state.strictOn }
             countDisplayText={this.state.countDisplayText}
             />;
   }
@@ -110,6 +111,7 @@ class App extends React.Component {
     this.toggleStrictMode(false);    
     this.resetGame(this.isOn ? this.ON_MESSAGE : "");
   }
+  
   startGame(){
     if(this.isOn){
       if(!this.isGameRunning){
@@ -143,6 +145,9 @@ class App extends React.Component {
   }
   toggleStrictMode(state){
     this.isStrict = state === undefined ? !this.isStrict : !!state;
+    this.setState((prevState, props) => ({
+      strictOn: this.isStrict
+    }));
   }  
   //activatePanel(panelID: string) - activates panel with panelID (ex. "green")
   activatePanel(panelId){    

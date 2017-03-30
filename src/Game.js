@@ -10,7 +10,8 @@ class Game extends React.Component {
         <Control id="control-panel" onStartClick={ this.props.onStartClick } 
                                     countDisplayText={this.props.countDisplayText} 
                                     onOnClick={ this.props.onOnClick } 
-                                    onStrictClick={ this.props.onStrictClick } />
+                                    onStrictClick={ this.props.onStrictClick } 
+                                    strictOn={ this.props.strictOn } />
         <Panel id='green' panelClicked={this.props.panelClicked} onPanelClick={ this.props.onPanelClick } onPanelUnClick={ this.props.onPanelUnClick } />
         <Panel id='red' panelClicked={this.props.panelClicked} onPanelClick={ this.props.onPanelClick } onPanelUnClick={ this.props.onPanelUnClick } />
         <Panel id='blue' panelClicked={this.props.panelClicked} onPanelClick={ this.props.onPanelClick } onPanelUnClick={ this.props.onPanelUnClick } />

@@ -88,6 +88,9 @@ button:active{
   opacity: 0.25;
 }
 
+#start, #on{
+  width: 25px;
+}
 #start-btn{
   background-color: red;
 }
@@ -110,7 +113,7 @@ button:active{
   background-color: #3A1717;
 }
 
-#strict-indicator.on{
+#strict-indicator.is-on{
   background-color: red;
 }
 
