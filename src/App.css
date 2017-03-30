@@ -1,4 +1,7 @@
 /* Base Application Styles */
+*{
+  position: relative;
+}
 body {
   color: #fff;
   background: #222;
@@ -89,8 +92,26 @@ button:active{
   background-color: red;
 }
 
+#strict{
+  width: 10px;
+}
+
 #strict-btn{
   background-color: yellow;
+}
+
+#strict-indicator{
+  
+  width: 10px;
+  height: 10px;
+  left: 8px;  
+  border-radius: 100%;
+  margin-bottom: 5px;
+  background-color: #3A1717;
+}
+
+#strict-indicator.on{
+  background-color: red;
 }
 
 #on-btn{

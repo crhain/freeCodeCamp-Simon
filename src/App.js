@@ -8,7 +8,8 @@ class App extends React.Component {
     super(props);
     //set the games state object
     this.state = {
-      countDisplayText: "",      
+      countDisplayText: "",
+      strictOn: false,      
       activePanel: ''
     };
     this.isOn = false;
