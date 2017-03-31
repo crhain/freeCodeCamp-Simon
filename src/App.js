@@ -75,8 +75,11 @@ class App extends React.Component {
   handlePanelUnClick(panelClicked, clickEvent) {
     if(this.isOn){
       if(this.isPlayerTurn){
-        this.deactivatePanel(panelClicked.props.id);
-        this.updatePlayerTurn(panelClicked.props.id);
+        if(panelClicked.props.id === this.state.activePanel){
+          this.deactivatePanel(panelClicked.props.id);
+          this.updatePlayerTurn(panelClicked.props.id);
+        }
+        
       return true;
       }
     }    
