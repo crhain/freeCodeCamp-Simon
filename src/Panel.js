@@ -7,8 +7,11 @@ class Panel extends React.Component{
       return (
         <div className={ "panel" + panelIsOnClass } id={this.props.id} 
               onMouseDown={ (event) => this.props.onPanelClick(this, event) }
-              onMouseUp={ (event) => this.props.onPanelUnClick(this, event) } 
-              onMouseLeave={ (event) => this.props.onPanelUnClick(this, event) } >          
+              onTouchStart={ (event) => this.props.onPanelClick(this, event) }
+              onMouseUp={ (event) => this.props.onPanelUnClick(this, event) }
+              onTouchEnd={ (event) => this.props.onPanelUnClick(this, event) }  
+              onMouseLeave={ (event) => this.props.onPanelUnClick(this, event) }
+              onTouchMove={ (event) => this.props.onPanelUnClick(this, event) } >          
         </div>
       );  
   }

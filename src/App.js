@@ -61,48 +61,49 @@ class App extends React.Component {
   //handlePanelClick(panelClicked: object, clickEvent: object) -
   // handles activation of panels
   handlePanelClick(panelClicked, clickEvent){
+    clickEvent.preventDefault();
     /*takes a reference 'panel' to panel object*/
     if(this.isOn){
       if(this.isPlayerTurn){
-        this.activatePanel(panelClicked.props.id);
-        return true;
+        this.activatePanel(panelClicked.props.id);        
       }
-    }    
-    return false;    
+    }            
   }
   //handlePanelUnClick(clickEvent: object) - deactivate a panel when it loses focus
   // or mouse button is released
   handlePanelUnClick(panelClicked, clickEvent) {
+    clickEvent.preventDefault();
     if(this.isOn){
       if(this.isPlayerTurn){
         if(panelClicked.props.id === this.state.activePanel){
           this.deactivatePanel(panelClicked.props.id);
           this.updatePlayerTurn(panelClicked.props.id);
-        }
-        
-      return true;
+        }   
       }
-    }    
-    return false;    
+    }
+    //console.log(clickEvent);        
   }
   //handleOnButtonClick(clickEvent: object) - turn game on and off
   handleOnButtonClick(clickEvent){
+    clickEvent.preventDefault();        
     /*Toggles on state*/
-    this.toggleOnMode();        
+    this.toggleOnMode();
+    
   }
   //handleStartButtonClick(clickEvent: object) - start the ball rolling
   handleStartButtonClick(clickEvent){        
+    clickEvent.preventDefault();
     //button only works if the console turned on and game not currently running.
-    this.startGame();
-    
+    this.startGame();    
   }
   //handleStrictButtonClick(clickEvent: object) - switch on strict mode
   handleStrictButtonClick(clickEvent){
+    clickEvent.preventDefault();
     /* toggles strict mode */
     if(this.isOn){
       this.toggleStrictMode();
       console.log('strict mode is:' + this.isStrict);    
-    }    
+    }        
   }
   /********************************************************************/
   /*Game Engine                                                       */
@@ -168,7 +169,7 @@ class App extends React.Component {
       if(!this.isCorrectPanel(panelId)){
         this.handleError();
         return false;
-      } 
+      }       
     }    
     this.playPanelSound(newPanelId);
     return true;              
@@ -183,7 +184,7 @@ class App extends React.Component {
       if(!this.isCorrectPanel(panelId)){
         newPanelId = "error";
       } 
-    }    
+    }        
     this.stopPanelSound(newPanelId);    
   }
   //isCorrectPanel(panelId: string)
