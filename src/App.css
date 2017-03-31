@@ -2,45 +2,49 @@
 *{
   position: relative;
 }
+html{
+  margin: 0;
+  padding: 0;
+}
 body {
+  margin: 0;
+  padding: 0;  
   color: #fff;
   background: #222;
   font-family: helvetica, sans-serif;
+  /*border: 1px solid red;*/
 }
 
 #game{
-  width: 500px;
+  width: 100%;
   height: 500px;
   background: white;
   color: black;
-  margin: 0 auto;
+  /*margin: 0 auto;*/
+  /*border: 1px solid red;*/
 }
 
+.panel{
+  width: 100%;
+  height: 50px;
+}
 .panel:hover{
   cursor: pointer;
 }
 
-#blue{
-  width: 90%;
-  height: 50px;
+#blue{  
   background: #4444B0; /*rgb(68,68,176)*/
 }
 
 #green{
-  width: 90%;
-  height: 50px;
   background: #44B044; /*rgb(68, 176, 68)*/
 }
 
 #yellow{
-  width: 90%;
-  height: 50px;
   background: #B0B044; /*rgb(176, 176, 68)*/
 }
 
 #red{
-  width: 90%;
-  height: 50px;
   background: #B04444; /*rgb(176, 68, 68)*/
 }
 
@@ -57,6 +61,12 @@ body {
   background-color: #FF0000;
 }
 
+#control-panel{
+  width: 80%;
+  margin: 0 auto 10px auto;
+  /*border: 1px solid red;*/
+}
+
 button{
   width: 25px;
   height: 25px;
@@ -70,13 +80,33 @@ button:active{
   box-shadow: 1px 1px 2px black;  
 }
 
-#count-display{
+#count{
+  display: inline-block;  
+  margin-right: 10px;
+}
+
+#start{
+  display: inline-block;
+  width: 50px;
+  margin-right: 10px;
+}
+
+#strict{
+  display: inline-block;
+  width: 50px;
+}
+
+#on{
+  display: inline-block;
+  width: 100px;  
+}
+
+#count-display{  
   width: 60px;
   height: 40px;
   border: 5px solid black;
   border-radius: 10px;
   background-color: #3A1717;
-  
 }
 #count-display>div{
   color: red;
@@ -88,15 +118,8 @@ button:active{
   opacity: 0.10;
 }
 
-#start, #on{
-  width: 25px;
-}
-#start-btn{
+#start-btn{  
   background-color: red;
-}
-
-#strict{
-  width: 10px;
 }
 
 #strict-btn{
@@ -121,6 +144,8 @@ button:active{
   background-color: blue;
 }
 
-
+.flex-row{
+  margin-top: 10px;  
+}
 
 
