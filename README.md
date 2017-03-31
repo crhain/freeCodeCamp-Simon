@@ -38,13 +38,12 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 CHANGES AND ADDITIONS 
 ==================================================
-
-1. Add on/off toggle effect to on button by breaking out as above
-2. break out other two buttons as well
-3. Add error if player does not hit a panel within a given amount of time 
-4. add error sound
-5. Add final styling for all components; should use simple layout for mobile and round layout with control in center for desktop and tablet
-6. edit panel sounds and add functionality to play them continuously
+0. Panels not working on mobile. Sometimes they play sound.  Sometimes light up.  Usually not both at same time.
+1. break out other two buttons as well
+2. Add error if player does not hit a panel within a given amount of time 
+3. add error sound
+4. Add final styling for all components; should use simple layout for mobile and round layout with control in center for desktop and tablet
+5. edit panel sounds and add functionality to play them continuously
 
 ## Table of Contents
 

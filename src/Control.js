@@ -11,7 +11,7 @@ class Control extends React.Component{
       <div id="control-panel">
         <h1>Simon(tm)</h1>
         <div className="flex-row">
-          <CountDisplay countDisplayText={ this.props.countDisplayText } isOn={this.props.isOn}/>
+          <CountDisplay countDisplayText={ this.props.countDisplayText } isOn={ this.props.isOn }/>
           <div id="start">
             <button id="start-btn" onClick={ this.props.onStartClick }></button>
             <label>START</label>
@@ -19,7 +19,7 @@ class Control extends React.Component{
           <StrictButton onStrictClick={ this.props.onStrictClick } strictOn={ this.props.strictOn } />
         </div>
         <div className="flex-row">
-          <OnOffButton onOnClick={ this.props.onOnClick }/> 
+          <OnOffButton onOnClick={ this.props.onOnClick } isOn={ this.props.isOn }/> 
         </div>            
       </div>
     );

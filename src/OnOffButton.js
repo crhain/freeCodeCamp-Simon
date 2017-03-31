@@ -1,12 +1,17 @@
 import React from 'react';
 
 class OnOffButton extends React.Component{
-  render(){    
+  render(){        
+    let isOnClass = this.props.isOn ? "is-on" : "";  
+
     return (
-       <div id="on">
-            <button id="on-btn" onClick={ this.props.onOnClick } ></button>
-            <label>ON/OFF</label>
-        </div>        
+    <div id="on">
+        <label>OFF</label>
+        <div id="on-btn-container">            
+            <button id="on-btn" className={ isOnClass } onClick={ this.props.onOnClick } ></button>
+        </div>
+        <label>ON</label>
+    </div>        
     );
   }
 }
