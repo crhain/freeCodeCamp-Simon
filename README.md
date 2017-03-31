@@ -38,7 +38,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 CHANGES AND ADDITIONS 
 ==================================================
-0. Add dim text on control-display by breaking it out to seperate component and using if statement to return it with is-on class or not
+
 1. Add on/off toggle effect to on button by breaking out as above
 2. break out other two buttons as well
 3. Add error if player does not hit a panel within a given amount of time 

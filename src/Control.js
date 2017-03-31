@@ -2,6 +2,7 @@
 import React from 'react';
 import CountDisplay from './CountDisplay'
 import StrictButton from './StrictButton';
+import OnOffButton from './OnOffButton';
 
 
 class Control extends React.Component{
@@ -18,10 +19,7 @@ class Control extends React.Component{
           <StrictButton onStrictClick={ this.props.onStrictClick } strictOn={ this.props.strictOn } />
         </div>
         <div className="flex-row">
-          <div id="on">
-            <button id="on-btn" onClick={ this.props.onOnClick } ></button>
-            <label>ON/OFF</label>
-          </div>        
+          <OnOffButton onOnClick={ this.props.onOnClick }/> 
         </div>            
       </div>
     );
