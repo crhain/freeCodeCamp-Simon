@@ -2,7 +2,6 @@
 import React from 'react';
 import './App.css';
 import Game from './Game';
-
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -25,23 +24,17 @@ class App extends React.Component {
     this.isPlayerTurn = false;
     this.step = 0;    
     this.aiPanelSequence = [];
-    this.playerPanelSequence = [];
-    
-
+    this.playerPanelSequence = [];    
     //bind button  handlers to app's context
     this.handleOnButtonClick = this.handleOnButtonClick.bind(this);
     this.handleStartButtonClick = this.handleStartButtonClick.bind(this);
     this.handleStrictButtonClick = this.handleStrictButtonClick.bind(this);
     this.handlePanelClick = this.handlePanelClick.bind(this);
     this.handlePanelUnClick = this.handlePanelUnClick.bind(this);
-
     //create new sound object for panels        
     this.panelSound = new Audio();
-
     //set some defaults for configuring the game
     this.debug = false;  //set to true to step on debug mode
-
-    
   }
   render() {
     return <Game panelClicked={this.state.activePanel} 
@@ -58,7 +51,6 @@ class App extends React.Component {
   /********************************************************************/
   /*Wrapper methods for control clicks                                */
   /********************************************************************/
-
   //handlePanelClick(panelClicked: object, clickEvent: object) -
   // handles activation of panels
   handlePanelClick(panelClicked, clickEvent){
@@ -89,7 +81,6 @@ class App extends React.Component {
     clickEvent.preventDefault();        
     /*Toggles on state*/
     this.toggleOnMode();
-    
   }
   //handleStartButtonClick(clickEvent: object) - start the ball rolling
   handleStartButtonClick(clickEvent){        
@@ -122,7 +113,6 @@ class App extends React.Component {
     this.toggleStrictMode(false);    
     this.resetGame(this.ON_MESSAGE);
   }
-  
   startGame(){
     if(this.isOn){
       if(!this.isGameRunning){
@@ -158,7 +148,6 @@ class App extends React.Component {
     window.setTimeout(this.resetGame.bind(this), this.PLAY_SPEED);
     //pause before
     window.setTimeout(this.startGame.bind(this), this.PLAY_SPEED*2);
-
   }
   toggleStrictMode(state){
     this.isStrict = state === undefined ? !this.isStrict : !!state;
@@ -198,9 +187,21 @@ class App extends React.Component {
   isCorrectPanel(panelId){
     return panelId === this.playerPanelSequence[0];
   }
+  flashCountDisplayText(status, times){
+    if(times === undefined){ times = 1; }
+    var flashTimer = 250;
+    this.updateCountDisplayText(status);
+    for(let i = 1; i <= times; i++){      
+      window.setTimeout(this.updateCountDisplayText.bind(this, "--"), flashTimer);
+      flashTimer += 250;
+      window.setTimeout(this.updateCountDisplayText.bind(this, status), flashTimer);
+      flashTimer +=250;      
+    }    
+  }
   //updateCountDisplayText(status: string) - updates count panel with current step and
   // can also pass optional status to update panel with.
   updateCountDisplayText(status = undefined){
+    console.log('updating display with ' + status);
     let update;
     if(status){
       update = status;
@@ -214,7 +215,8 @@ class App extends React.Component {
   //handleError() - handles errors on button presses
   handleError(){
     this.playPanelSound("error");
-    this.updateCountDisplayText(this.ERROR_MESSAGE);        
+    //this.updateCountDisplayText(this.ERROR_MESSAGE); 
+    this.flashCountDisplayText(this.ERROR_MESSAGE, 2);       
   }
   //playPanelSound(panelID: string) - plays sound associated with panel
   // use panelID = 'error' to play error sound 
@@ -225,7 +227,6 @@ class App extends React.Component {
         sound4 = "media/simonSound4.mp3",
         soundError = sound4;
     let currentSound = "";
-        
       switch(panelId){
             case "green":
               currentSound = sound1;
@@ -244,14 +245,11 @@ class App extends React.Component {
               break;
             default:
                 console.log("WRONG ID FOR PANEL! CAN'T PLAY SOUND!");
-        }        
-        
+        }                
       if(currentSound != ""){
         this.panelSound.src = currentSound;
         this.panelSound.play();
-      }  
-         
-      //console.log('panel ' + panelId + ' turned on!');
+      }           
   }
   //stopPanelSound(panelID: string) - plays sound associated with panel
   // use panelID = 'error' to play error sound 
@@ -260,8 +258,7 @@ class App extends React.Component {
     //console.log('panel ' + panelId + ' turned off!'); 
   }  
   //updatePlayerTurn(panelId: string) - main logic for evaluating player panel presses
-  updatePlayerTurn(panelId){
-    
+  updatePlayerTurn(panelId){    
     //1. check to see if panelId matches next item in sequence
     if(this.isCorrectPanel(panelId)){
       //2. if it does, then remove current item from sequence
@@ -291,7 +288,7 @@ class App extends React.Component {
         window.setTimeout(this.restartGame.bind(this), this.PLAY_SPEED*2);
       } else{
         this.playerPanelSequence = this.aiPanelSequence.slice();
-        window.setTimeout(this.aiPlaySequence.bind(this), this.PLAY_SPEED);      
+        window.setTimeout(this.aiPlaySequence.bind(this), this.PLAY_SPEED*2);      
       }      
     }        
     return true;
@@ -382,13 +379,9 @@ class App extends React.Component {
     if(text.length === 1){
       text = "0" + text;
     }
-
     return text;
-
   }
 }
-
 App.defaultProps = {
 };
-
 export default App;
