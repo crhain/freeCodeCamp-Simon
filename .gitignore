@@ -8,6 +8,10 @@
 
 # production
 /build
+/build/media
+/build/asset-manifest.json
+/build/favicon.ico
+/build/index.html
 
 # misc
 .DS_Store
