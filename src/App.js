@@ -8,8 +8,10 @@ class App extends React.Component {
     super(props);
     //some constants
     this.ERROR_MESSAGE = "!!";
+    this.WIN_MESSAGE = "WIN";
     this.ON_MESSAGE = "--";
     this.PLAY_SPEED = 1000; //speed in miliseconds (so 1000 = 1 second)
+    this.STEPS_TO_WIN = 1; 
     //set the games state object
     this.state = {
       countDisplayText: this.ON_MESSAGE,
@@ -37,7 +39,6 @@ class App extends React.Component {
     this.panelSound = new Audio();
 
     //set some defaults for configuring the game
-    this.stepsToWin = 20; //number of steps before winning the game. 
     this.debug = false;  //set to true to step on debug mode
 
     
@@ -141,17 +142,23 @@ class App extends React.Component {
   }
   //resetGame() - resests game state and interface
   resetGame(countDisplayText){
-    if(countDisplayText === undefined){
-      countDisplayText = "00";
-    }
+    this.updateCountDisplayText(this.ON_MESSAGE);
     this.panelSound.pause();
     this.aiPanelSequence = [];
     this.playerPanelSequence = [];
     this.step = 0;
     this.setState((prevState, props) => ({
-      countDisplayText: countDisplayText,
       activePanel: ''
     }));    
+  }
+  restartGame(){
+    //disable player actions
+    this.isPlayerTurn = false;
+    //pause before reseting game
+    window.setTimeout(this.resetGame.bind(this), this.PLAY_SPEED);
+    //pause before
+    window.setTimeout(this.startGame.bind(this), this.PLAY_SPEED*2);
+
   }
   toggleStrictMode(state){
     this.isStrict = state === undefined ? !this.isStrict : !!state;
@@ -254,6 +261,7 @@ class App extends React.Component {
   }  
   //updatePlayerTurn(panelId: string) - main logic for evaluating player panel presses
   updatePlayerTurn(panelId){
+    
     //1. check to see if panelId matches next item in sequence
     if(this.isCorrectPanel(panelId)){
       //2. if it does, then remove current item from sequence
@@ -262,8 +270,16 @@ class App extends React.Component {
       // 2a. check to see if sequence is over with. if it is, then switch to ai player
       //     and generate new sequence 
       if(this.playerPanelSequence.length < 1){
-        this.isPlayerTurn = false;        
-        window.setTimeout(this.aiPlayerTurn.bind(this), this.PLAY_SPEED);
+        //check to see if player has won game
+        if(this.step === this.STEPS_TO_WIN) {
+          console.log("Victory!");
+          this.updateCountDisplayText(this.WIN_MESSAGE);
+          this.isPlayerTurn = false;
+          window.setTimeout(this.restartGame.bind(this), this.PLAY_SPEED*2); 
+        }else{
+          this.isPlayerTurn = false;        
+          window.setTimeout(this.aiPlayerTurn.bind(this), this.PLAY_SPEED);
+        }        
       } 
     //3. it does not match, 
     } else {  
@@ -272,7 +288,7 @@ class App extends React.Component {
       //need something to disable player hitting button but not disable deactivating current button???      
       this.isPlayerTurn = false;
       if(this.isStrict){
-        window.setTimeout(this.resetGame.bind(this), this.PLAY_SPEED);
+        window.setTimeout(this.restartGame.bind(this), this.PLAY_SPEED*2);
       } else{
         this.playerPanelSequence = this.aiPanelSequence.slice();
         window.setTimeout(this.aiPlaySequence.bind(this), this.PLAY_SPEED);      

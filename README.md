@@ -40,12 +40,11 @@ CHANGES AND ADDITIONS
 ==================================================
 0. Panel activates twice when holding down on touch screen!
   *** ???  but it doesn't seem to count the second click for game purposes.
-1. break out other two buttons as well
-2. Add error if player does not hit a panel within a given amount of time 
-3. add error sound
-4. Add final styling for all components; should use simple layout for mobile and round layout with control in center for desktop and tablet
-5. edit panel sounds and add functionality to play them continuously
-6. Add winning event at 20 turns
+1. Add error if player does not hit a panel within a given amount of time   
+2. add error sound
+3. Add final styling for all components; should use simple layout for mobile and round layout with control in center for desktop and tablet
+4. edit panel sounds and add functionality to play them continuously
+
 
 ## Table of Contents
 
