@@ -125,6 +125,8 @@ button:active{
 
 #start-btn{  
   background-color: red;
+  left: 10px;
+  margin-bottom: 5px;
 }
 
 #strict{
@@ -134,13 +136,14 @@ button:active{
 
 #strict-btn{
   background-color: yellow;
+  left: 10px;
+  margin-bottom: 5px;
 }
 
-#strict-indicator{
-  
+#strict-indicator{  
   width: 10px;
   height: 10px;
-  left: 8px;  
+  left: 18px;  
   border-radius: 100%;
   margin-bottom: 5px;
   background-color: #3A1717;
@@ -159,7 +162,7 @@ button:active{
 #on-btn-container{
   display: inline-block;
   width: 50px;
-  height: 25px;
+  height: 28px;
   background-color: #3A1717;
   border: 2px solid black;
 }
@@ -170,7 +173,7 @@ button:active{
 }
 
 #on-btn.is-on{
-  left: 25px;
+  left: 20px;
 }
 
 .flex-row{
