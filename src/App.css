@@ -1,6 +1,7 @@
 /* Base Application Styles */
 *{
   position: relative;
+  box-sizing: border-box;
 }
 html{
   margin: 0;
@@ -14,6 +15,8 @@ body {
   font-family: helvetica, sans-serif;
   /*border: 1px solid red;*/
 }
+
+
 
 #game{
   width: 100%;
@@ -161,4 +164,50 @@ button:active{
   margin-top: 10px;  
 }
 
-
+/*media queries for larger screens*/
+@media screen and (min-width: 700px) {
+  #game{
+    width: 650px;
+    height: 650px;
+    border-radius: 100%;
+    margin: auto;
+  }
+  #control-panel{
+    position: absolute;  
+    width: 350px;
+    height: 350px;
+    z-index: 10;
+    background-color: white;
+    border-radius: 100%;
+    left: 150px;
+    top: 150px;
+    border: 10px solid black;
+  }
+  .panel{
+    width:325px;
+    height: 325px;
+    border: 10px solid black;
+    
+  }
+  .panel#green{
+    /*upper left*/
+    border-radius: 100% 0 0 0;
+  }
+  .panel#red{
+    /*upper right*/
+    border-radius: 0 100% 0 0;
+    left: 325px;
+    bottom: 325px;
+  }
+  .panel#blue{
+    /*lower left*/
+    border-radius: 0 0 100% 0;
+    left: 325px;
+    bottom: 325px;
+  }
+  .panel#yellow{
+    /*lower right*/
+    border-radius: 0 0 0 100%;
+    bottom: 650px;
+  }
+}
