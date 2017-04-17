@@ -34,7 +34,7 @@ body {
 }
 
 #blue{  
-  background: #4444B0; /*rgb(68,68,176)*/
+  background: #4444B0; /*rgb(68,68,176)*/  
 }
 
 #green{
@@ -60,6 +60,10 @@ body {
 }
 .panel-on#red{
   background-color: #FF0000;
+}
+
+.panel-error{
+  box-shadow: inset 5px 5px 30px 5px red, inset -5px -5px 30px 5px red;
 }
 
 #control-panel{
