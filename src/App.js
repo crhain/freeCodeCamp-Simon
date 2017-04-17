@@ -11,7 +11,7 @@ class App extends React.Component {
     this.WIN_MESSAGE = "WIN";
     this.ON_MESSAGE = "--";
     this.PLAY_SPEED = 1000; //speed in miliseconds (so 1000 = 1 second)
-    this.STEPS_TO_WIN = 1; 
+    this.STEPS_TO_WIN = 20; 
     //set the games state object
     this.state = {
       countDisplayText: this.ON_MESSAGE,
