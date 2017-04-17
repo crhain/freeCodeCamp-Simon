@@ -9,7 +9,7 @@ class CountDisplay extends React.Component{
         <div id="count-display">
           <div className={isOn}>{ this.props.countDisplayText }</div>
         </div>
-        <div>COUNT</div>
+        <div id="count-label">COUNT</div>
       </div>
     );
   }

@@ -96,12 +96,17 @@ button:active{
 }
 
 #count{
-  display: inline-block;  
+  display: inline-block;
   margin-right: 20px;  
 }
 
+#count-label{
+  width: 100%;
+  margin-left: 7px;
+}
+
 #count-display{  
-  width: 60px;
+  width: 70px;
   height: 40px;
   border: 5px solid black;
   border-radius: 10px;

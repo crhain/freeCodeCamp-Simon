@@ -20,5 +20,5 @@
     "eject": "react-scripts eject",
     "deploy" : "npm run build&&gh-pages -d build"
   },
-  "homepage": "http://carltonhain.com/freeCodeCamp-simon"
+  "homepage": "http://crhain.github.io/freeCodeCamp-simon"
 }
