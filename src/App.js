@@ -73,8 +73,7 @@ class App extends React.Component {
           this.updatePlayerTurn(panelClicked.props.id);
         }   
       }
-    }
-    //console.log(clickEvent);        
+    }      
   }
   //handleOnButtonClick(clickEvent: object) - turn game on and off
   handleOnButtonClick(clickEvent){
@@ -94,7 +93,6 @@ class App extends React.Component {
     /* toggles strict mode */
     if(this.isOn){
       this.toggleStrictMode();
-      console.log('strict mode is:' + this.isStrict);    
     }        
   }
   /********************************************************************/
