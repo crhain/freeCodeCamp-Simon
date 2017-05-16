@@ -11,30 +11,32 @@ body {
   margin: 0;
   padding: 0;  
   color: #fff;
-  background: #222;
+  background: #3C4452;
   font-family: helvetica, sans-serif;
   /*border: 1px solid red;*/
 }
 
 #game{
   width: 100%;
-  height: 500px;
-  background: white;
+  height: 390px;
+  background:#9BA7B9;
   color: black;
   /*margin: 0 auto;*/
-  /*border: 1px solid red;*/
+  border: 1px solid black;
 }
 
 .panel{
   width: 100%;
   height: 50px;
+  /*border: 2px solid black;*/
+  box-shadow: inset -2px -2px 10px 2px black;
 }
 .panel:hover{
   cursor: pointer;
 }
 
 #blue{  
-  background: #4444B0; /*rgb(68,68,176)*/  
+  background: #4444B0; /*rgb(68,68,176)*/    
 }
 
 #green{
@@ -68,7 +70,10 @@ body {
 
 #control-panel{
   width: 100%;
+  background-color: #DEE1E7;
   margin: 0 auto 10px auto;
+  border: 2px solid black;
+  box-shadow: 1px 1px 5px 1px black;
 }
 
 #controls{
@@ -207,6 +212,7 @@ button:active{
     left: 150px;
     top: 150px;
     border: 10px solid black;
+    box-shadow: none;
   }
   #controls{
     width: 100%;
@@ -216,7 +222,7 @@ button:active{
     width:325px;
     height: 325px;
     border: 10px solid black;
-    
+    box-shadow: none;
   }
   .panel#green{
     /*upper left*/
