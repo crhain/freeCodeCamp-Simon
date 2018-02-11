@@ -32,7 +32,7 @@ class App extends React.Component {
     this.handlePanelClick = this.handlePanelClick.bind(this);
     this.handlePanelUnClick = this.handlePanelUnClick.bind(this);
     //create new sound object for panels        
-    this.panelSound = new Audio();
+    this.panelSound = new Audio();    
     //set some defaults for configuring the game
     this.debug = false;  //set to true to step on debug mode
   }
@@ -131,7 +131,7 @@ class App extends React.Component {
   //resetGame() - resests game state and interface
   resetGame(countDisplayText){
     this.updateCountDisplayText(this.ON_MESSAGE);
-    this.panelSound.pause();
+    // this.panelSound.pause();
     this.aiPanelSequence = [];
     this.playerPanelSequence = [];
     this.step = 0;
@@ -165,7 +165,7 @@ class App extends React.Component {
         return false;
       }       
     }    
-    this.playPanelSound(newPanelId);
+    // this.playPanelSound(newPanelId);
     return true;              
   }
   //deactivatePanel(panelID: string) - deactivates panel with panelID (ex. "green")
@@ -179,7 +179,7 @@ class App extends React.Component {
         newPanelId = "error";
       } 
     }        
-    this.stopPanelSound(newPanelId);    
+    // this.stopPanelSound(newPanelId);    
   }
   //isCorrectPanel(panelId: string)
   isCorrectPanel(panelId){
