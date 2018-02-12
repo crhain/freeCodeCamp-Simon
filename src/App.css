@@ -73,9 +73,10 @@ body {
 }
 
 #control-panel{
-  width: 100%;
+  width: 100%;  
   background-color: #DEE1E7;
-  margin: 0 auto 10px auto;
+  margin: 0 auto 0 auto;
+  padding: 10px 5px;
   border: 2px solid black;
   box-shadow: 1px 1px 5px 1px black;
 }
