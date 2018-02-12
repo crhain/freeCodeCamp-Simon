@@ -16,7 +16,7 @@ class App extends React.Component {
       countDisplayText: this.ON_MESSAGE,
       on: false,
       strictOn: false,      
-      activePanel: ''
+      activePanel: {id: "", error: false}
     };
     this.isOn = false;
     this.isStrict = false;
@@ -68,7 +68,7 @@ class App extends React.Component {
     clickEvent.preventDefault();
     if(this.isOn){
       if(this.isPlayerTurn){
-        if(panelClicked.props.id === this.state.activePanel){
+        if(panelClicked.props.id === this.state.activePanel.id){
           this.deactivatePanel(panelClicked.props.id);
           this.updatePlayerTurn(panelClicked.props.id);
         }   
@@ -136,7 +136,7 @@ class App extends React.Component {
     this.playerPanelSequence = [];
     this.step = 0;
     this.setState((prevState, props) => ({
-      activePanel: ''
+      activePanel: {id: '', error: false}
     }));    
   }
   restartGame(){
@@ -156,30 +156,30 @@ class App extends React.Component {
   //activatePanel(panelID: string) - activates panel with panelID (ex. "green")
   activatePanel(panelId){    
     let newPanelId = panelId;
-    this.setState((prevState, props) => ({
-      activePanel: panelId
-    }));
+    let panelState = {id: panelId, error: false};
+    
     if(this.isPlayerTurn){
       if(!this.isCorrectPanel(panelId)){
-        this.handleError();
-        return false;
-      }       
+        panelState.error = true;
+        this.handleError();        
+      } 
     }    
-    // this.playPanelSound(newPanelId);
-    return true;              
+
+    this.setState((prevState, props) => ({
+      activePanel: panelState
+    }));    
   }
   //deactivatePanel(panelID: string) - deactivates panel with panelID (ex. "green")
   deactivatePanel(panelId){
     let newPanelId = panelId;
     this.setState((prevSate, props) => ({
-      activePanel: ''
+      activePanel: {id: '', error: false}
     }));
     if(this.isPlayerTurn){
-      if(!this.isCorrectPanel(panelId)){
-        newPanelId = "error";
-      } 
-    }        
-    // this.stopPanelSound(newPanelId);    
+      // if(!this.isCorrectPanel(panelId)){
+      //   newPanelId = "error";
+      // } 
+    }            
   }
   //isCorrectPanel(panelId: string)
   isCorrectPanel(panelId){
@@ -212,7 +212,7 @@ class App extends React.Component {
   }
   //handleError() - handles errors on button presses
   handleError(){
-    this.playPanelSound("error");
+    // this.playPanelSound("error");
     //this.updateCountDisplayText(this.ERROR_MESSAGE); 
     this.flashCountDisplayText(this.ERROR_MESSAGE, 2);       
   }

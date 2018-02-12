@@ -4,28 +4,38 @@ import Sound from 'react-sound';
 
 class Panel extends React.Component{
   render(){
-    let panelIsOnClass = (this.props.panelClicked === this.props.id) ? " panel-on" : ""; 
+    let panelIsOnClass = "";
     let soundUrl = "media/simonSound1.mp3";
 
-    //get sound url
-    switch(this.props.id){
-      case "green":
-        soundUrl = "media/simonSoundFade1.mp3";
-        break;
-      case "red":
-        soundUrl = "media/simonSoundFade2.mp3";
-        break;
-      case "blue":
-        soundUrl = "media/simonSoundFade3.mp3";
-        break;
-      case "yellow":
+    if(this.props.panelClicked.id === this.props.id){
+      if(this.props.panelClicked.error){
+        panelIsOnClass = " panel-on"; //change to an error class
         soundUrl = "media/simonSoundFade4.mp3";
-        break;
-      case "error":
-        soundUrl = "media/simonSoundFade5.mp3";
+        console.log("wrong panel clicked!!!");
+      } else {
+        console.log("correct panel clicked!!!");
+        panelIsOnClass = " panel-on";
+        //get sound url
+        switch(this.props.id){
+          case "green":
+            soundUrl = "media/simonSoundFade1.mp3";
+            break;
+          case "red":
+            soundUrl = "media/simonSoundFade2.mp3";
+            break;
+          case "blue":
+            soundUrl = "media/simonSoundFade3.mp3";
+            break;
+          case "yellow":
+            soundUrl = "media/simonSoundFade4.mp3";
+            break;
+          default:
+            soundUrl = "";
+        }
+      }
     }
 
-    if(this.props.panelClicked === this.props.id) {
+    if(this.props.panelClicked.id === this.props.id) {
       return (      
         <div className={ "panel" + panelIsOnClass } id={this.props.id} 
               onMouseDown={ (event) => this.props.onPanelClick(this, event) }
