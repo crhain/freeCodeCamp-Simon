@@ -261,13 +261,13 @@ class App extends React.Component {
     if(this.isCorrectPanel(panelId)){
       //2. if it does, then remove current item from sequence
       this.playerPanelSequence.shift();
-      console.log("correct!");
+      // console.log("correct!");
       // 2a. check to see if sequence is over with. if it is, then switch to ai player
       //     and generate new sequence 
       if(this.playerPanelSequence.length < 1){
         //check to see if player has won game
         if(this.step === this.STEPS_TO_WIN) {
-          console.log("Victory!");
+          // console.log("Victory!");
           this.updateCountDisplayText(this.WIN_MESSAGE);
           this.isPlayerTurn = false;
           window.setTimeout(this.restartGame.bind(this), this.PLAY_SPEED*2); 
@@ -279,8 +279,7 @@ class App extends React.Component {
     //3. it does not match, 
     } else {  
       //3.a. signal an error and trigger ai to play sequence again
-      console.log("Incorrect!");
-      //need something to disable player hitting button but not disable deactivating current button???      
+      // console.log("Incorrect!");    
       this.isPlayerTurn = false;
       if(this.isStrict){
         window.setTimeout(this.restartGame.bind(this), this.PLAY_SPEED*2);
