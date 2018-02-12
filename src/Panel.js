@@ -9,11 +9,11 @@ class Panel extends React.Component{
 
     if(this.props.panelClicked.id === this.props.id){
       if(this.props.panelClicked.error){
-        panelIsOnClass = " panel-on"; //change to an error class
+        panelIsOnClass = " panel-error"; //change to an error class
         soundUrl = "media/simonSoundFade4.mp3";
-        console.log("wrong panel clicked!!!");
+        // console.log("wrong panel clicked!!!");
       } else {
-        console.log("correct panel clicked!!!");
+        // console.log("correct panel clicked!!!");
         panelIsOnClass = " panel-on";
         //get sound url
         switch(this.props.id){
