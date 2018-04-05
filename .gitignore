@@ -6,7 +6,8 @@
 # testing
 /coverage
 
-# production
+#production
+archive
 build
 /build
 /build/media
