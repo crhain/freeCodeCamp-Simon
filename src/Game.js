@@ -1,7 +1,7 @@
 /*renders game console with buttons and control panel*/
 import React from 'react';
-import Control from './Control';
-import Panel from './Panel';
+import Control from 'Control';
+import Panel from 'Panel';
 
 class Game extends React.Component {
   render() {

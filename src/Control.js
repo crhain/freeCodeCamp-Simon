@@ -1,8 +1,8 @@
 /*renders control panel with associated buttons and display*/
 import React from 'react';
-import CountDisplay from './CountDisplay'
-import StrictButton from './StrictButton';
-import OnOffButton from './OnOffButton';
+import CountDisplay from 'CountDisplay';
+import StrictButton from 'StrictButton';
+import OnOffButton from 'OnOffButton';
 
 
 class Control extends React.Component{

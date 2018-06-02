@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Panel from './Panel';
+import Panel from 'Panel';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
